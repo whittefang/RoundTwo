@@ -47,9 +47,11 @@ namespace RoundTwoMono
             if (animType == animationType.looping || animType == animationType.oneShot || animType == animationType.pingPong)
             {
                 currentFrame = 0;
+                timeBetweenFrames = frames[currentFrame].timeTillNext;
             }
             else if (animType == animationType.reverseLoop){
                 currentFrame = frames.Count - 1;
+                timeBetweenFrames = frames[currentFrame].timeTillNext;
             }
 
             return frames[currentFrame].sprite;

@@ -26,6 +26,7 @@ namespace RoundTwoMono
         Texture2D hitboxTexture;
         Color hitboxColor;
         Transform parentTransform;
+        bool incrementActionFrame, done;
 
         public Attack(InputManager input, Transform parentTransform, int totalSteps) {
             if (input.playerNumber == 0)
@@ -47,14 +48,20 @@ namespace RoundTwoMono
             hitboxTexture = content.Load<Texture2D>("square");
         }
 
-        public void AddActionFrame(ActionFrame actionFrame) {
-            
-            actionFrames.Add(actionFrame);
+        public void AddActionFrame(ActionFrame actionFrame, int duration =1) {
+            for (int i = 0; i < duration; i++)
+            {
+                actionFrames.Add(actionFrame);
+                actionFrame = new ActionFrame(actionFrame);
+                actionFrame.setActiveFrame(actionFrame.activeFrame + 1);
+            }
         }
 
         public void Start() {
             currentStep = -1;
             currentActionFrame = 0;
+            done = false;
+            incrementActionFrame = false;
         }
 
         // runs the current step of the attack
@@ -62,20 +69,44 @@ namespace RoundTwoMono
         public bool NextStep()
         {
             currentStep++;
-            if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isAttack)
+            if (!done)
             {
-                Hitbox tmp = actionFrames[currentActionFrame].hitbox;
-                tmp.hitboxBounds.X = (int)(parentTransform.position.X + tmp.positionOffset.X);
-                tmp.hitboxBounds.Y = (int)(parentTransform.position.Y + tmp.positionOffset.Y);
-                actionFrames[currentActionFrame].hitbox = tmp;
-
-                if (actionFrames[currentActionFrame].hitbox.hitboxBounds.Intersects(otherHurtbox))
+                if (incrementActionFrame)
                 {
-                    // deal damage
+                    if ((currentActionFrame + 1) >= actionFrames.Count)
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        currentActionFrame++;
+                    }
+                }
+                incrementActionFrame = false;
+
+                if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isAttack)
+                {
+                    Hitbox tmp = actionFrames[currentActionFrame].hitbox;
+                    tmp.hitboxBounds.X = (int)(parentTransform.position.X + tmp.positionOffset.X);
+                    tmp.hitboxBounds.Y = (int)(parentTransform.position.Y + tmp.positionOffset.Y);
+                    actionFrames[currentActionFrame].hitbox = tmp;
+                    incrementActionFrame = true;
+                    if (actionFrames[currentActionFrame].hitbox.hitboxBounds.Intersects(otherHurtbox))
+                    {
+                        // deal damage
+                    }
+                }
+
+                if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isMovement)
+                {
+                    parentTransform.Translate(actionFrames[currentActionFrame].movementTranslation);
+                    incrementActionFrame = true;
                 }
             }
 
-             if (currentStep >= totalSteps)
+            
+
+            if (currentStep >= totalSteps)
             {
                 return true;
             }
@@ -86,7 +117,7 @@ namespace RoundTwoMono
         // renders the hitbox as a red square
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isAttack)
+            if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isMovement)
             {
                 spriteBatch.Draw(hitboxTexture, actionFrames[currentActionFrame].hitbox.hitboxBounds, hitboxColor);
             }
@@ -98,6 +129,15 @@ namespace RoundTwoMono
             this.activeFrame = activeFrame;
         }
 
+        public ActionFrame(ActionFrame actionframe) {
+            activeFrame = actionframe.activeFrame;
+            isAttack = actionframe.isAttack;
+            isMovement = actionframe.isMovement;
+            movementTranslation = actionframe.movementTranslation;
+            hitbox = actionframe.hitbox;
+            optionalFunction = actionframe.optionalFunction;
+        }
+
         public void setAttack(Hitbox hitbox) {
             this.hitbox = hitbox;
             isAttack = true;
@@ -106,6 +146,9 @@ namespace RoundTwoMono
         {
             movementTranslation = offset;
             isMovement = true;
+        }
+        public void setActiveFrame(int activeFrame) {
+            this.activeFrame = activeFrame;
         }
 
         public int activeFrame;
