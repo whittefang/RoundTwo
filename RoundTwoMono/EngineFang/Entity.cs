@@ -12,6 +12,7 @@ namespace RoundTwoMono
         public Transform transform;
         public String id;
         public bool enabled;
+        public Scene scene;
         List<Component> componentList;
         List<Updateable> updateableComponents;
         List<Renderable> renderableComponents;
@@ -50,6 +51,19 @@ namespace RoundTwoMono
             }
             
             return null;
+        }
+        public List<T> getComponents<T>() where T : Component
+        {
+            List<T> results = new List<T>();
+            for (int i = 0; i < componentList.Count; i++)
+            {
+                if (componentList[i] is T)
+                {
+                   results.Add( componentList[i] as T);
+                }
+            }
+
+            return results;
         }
         // push update to all updateable components
         public void Update()

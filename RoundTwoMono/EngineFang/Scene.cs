@@ -15,6 +15,7 @@ namespace RoundTwoMono
         }
 
         public void addEntity(Entity entity) {
+            entity.scene = this;
             entities.Add(entity);
         }
         public void Update() {

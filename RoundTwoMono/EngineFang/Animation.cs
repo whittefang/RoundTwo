@@ -22,6 +22,7 @@ namespace RoundTwoMono
         int currentFrame;
         bool animationDirection;
         animationType animType;
+        public bool renderOneshotAfterCompletion = true;
 
         public Animation() {
             frames = new List<Frame>();
@@ -69,7 +70,13 @@ namespace RoundTwoMono
                 currentFrame++;
                 if (currentFrame >= frames.Count)
                 {
-                    currentFrame = frames.Count - 1;
+                    if (renderOneshotAfterCompletion)
+                    {
+                        currentFrame = frames.Count - 1;
+                    }
+                    else {
+                        return null;
+                    }
                 }
             }
             else if (animType == animationType.pingPong)

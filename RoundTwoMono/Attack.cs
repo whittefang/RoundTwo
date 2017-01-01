@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,28 +21,32 @@ namespace RoundTwoMono
         }
 
     
-        int currentStep, totalSteps, currentActionFrame;
-        List<ActionFrame> actionFrames;
-        Rectangle otherHurtbox;
+        int currentStep, totalSteps;
+        Dictionary< int,ActionFrame> actionFrames;
+        Entity otherPlayer;
+        Health otherHealth; 
         Texture2D hitboxTexture;
         Color hitboxColor;
         Transform parentTransform;
-        bool incrementActionFrame, done;
+        PlayerMovement playerMovement;
+        public FighterState state;
+        public bool isJumpingAttack;
 
-        public Attack(InputManager input, Transform parentTransform, int totalSteps) {
-            if (input.playerNumber == 0)
-            {
-                otherHurtbox = MasterObjectContainer.playerOneHurtbox;
-            }
-            else
-            {
-                otherHurtbox = MasterObjectContainer.playerTwoHurtbox;
-            }
+        public Attack(InputManager input, Transform parentTransform, PlayerMovement playerMovement, FighterState newState, int totalSteps) {
+            
             hitboxColor = new Color(Color.Red, .5f);
-            actionFrames = new List<ActionFrame>();
+            actionFrames = new Dictionary<int ,ActionFrame>();
             this.parentTransform = parentTransform;
             this.totalSteps = totalSteps;
-            
+            this.playerMovement = playerMovement;
+            state = newState;
+            isJumpingAttack = false;
+
+
+        }
+        public void SetOtherPlayer(ref Entity otherPlayer) {
+            this.otherPlayer = otherPlayer;
+            otherHealth = otherPlayer.getComponent<Health>();
         }
 
         public void Load(ContentManager content) {
@@ -49,65 +54,92 @@ namespace RoundTwoMono
         }
 
         public void AddActionFrame(ActionFrame actionFrame, int duration =1) {
+         
             for (int i = 0; i < duration; i++)
             {
-                actionFrames.Add(actionFrame);
-                actionFrame = new ActionFrame(actionFrame);
-                actionFrame.setActiveFrame(actionFrame.activeFrame + 1);
+                // if an action frame exists we replace relevant fields
+                // WARING: possible to overwrite important data 
+                if (actionFrames.ContainsKey(actionFrame.activeFrame)) {
+                    if (actionFrame.isAttack) {
+                        actionFrames[actionFrame.activeFrame].setAttack(actionFrame.hitbox);
+                    }
+                    if (actionFrame.isMovement)
+                    {
+                        actionFrames[actionFrame.activeFrame].setMovement(actionFrame.movementTranslation);
+                    }
+                    if(actionFrame.optionalFunction != null)
+                    {
+                        actionFrames[actionFrame.activeFrame].optionalFunction = actionFrame.optionalFunction;
+                    }
+                } else {
+                    actionFrames.Add(actionFrame.activeFrame, actionFrame);
+                    actionFrame = new ActionFrame(actionFrame);
+                    actionFrame.setActiveFrame(actionFrame.activeFrame + 1);
+                }
             }
         }
 
         public void Start() {
             currentStep = -1;
-            currentActionFrame = 0;
-            done = false;
-            incrementActionFrame = false;
+            playerMovement.cancelState = CancelState.none;
         }
 
         // runs the current step of the attack
         // returns true if the attack has finished, false if it is still going on
-        public bool NextStep()
+        public bool NextStep(Vector2 direction)
         {
             currentStep++;
-            if (!done)
+
+            if (currentStep <= totalSteps && actionFrames.ContainsKey(currentStep))
             {
-                if (incrementActionFrame)
+                // move 
+                if (actionFrames[currentStep].isMovement)
                 {
-                    if ((currentActionFrame + 1) >= actionFrames.Count)
+                    playerMovement.MoveTowards(actionFrames[currentStep].movementTranslation);
+                }
+
+                // activate hitbox
+                if (actionFrames[currentStep].isAttack)
+                {
+                    // check if this is the first frame of an attack and mark its id 
+                    // else set the following active frame ids to the same as the previous
+                    if (!actionFrames.ContainsKey(currentStep - 1) || !actionFrames[currentStep - 1].isAttack)
                     {
-                        done = true;
+                        actionFrames[currentStep].hitbox.moveCurrentUseID++;
                     }
                     else
                     {
-                        currentActionFrame++;
+                        actionFrames[currentStep].hitbox.moveCurrentUseID = actionFrames[currentStep-1].hitbox.moveCurrentUseID;
                     }
-                }
-                incrementActionFrame = false;
-
-                if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isAttack)
-                {
-                    Hitbox tmp = actionFrames[currentActionFrame].hitbox;
-                    tmp.hitboxBounds.X = (int)(parentTransform.position.X + tmp.positionOffset.X);
+                    Hitbox tmp = actionFrames[currentStep].hitbox;
+                    tmp.hitboxBounds.X = (int)(parentTransform.position.X - tmp.hitboxBounds.Width / 2) + (int)(tmp.positionOffset.X * direction.X);
                     tmp.hitboxBounds.Y = (int)(parentTransform.position.Y + tmp.positionOffset.Y);
-                    actionFrames[currentActionFrame].hitbox = tmp;
-                    incrementActionFrame = true;
-                    if (actionFrames[currentActionFrame].hitbox.hitboxBounds.Intersects(otherHurtbox))
+                    actionFrames[currentStep].hitbox = tmp;
+                    if (actionFrames[currentStep].hitbox.hitboxBounds.Intersects(otherHealth.hurtbox))
                     {
+                        Rectangle hitUnion = Rectangle.Intersect(actionFrames[currentStep].hitbox.hitboxBounds, otherHealth.hurtbox);
+                        Vector2 hitPoint = new Vector2(hitUnion.X - hitUnion.Width / 2, hitUnion.Y - hitUnion.Height / 2);
                         // deal damage
+                        otherHealth.ProcessHit(tmp,hitPoint);
+
+                        //TODO: fix cancel state for invincible
+                        playerMovement.cancelState = actionFrames[currentStep].hitbox.cancelStrength;
                     }
                 }
 
-                if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isMovement)
+                
+                // run optional function
+                if (actionFrames[currentStep].optionalFunction != null)
                 {
-                    parentTransform.Translate(actionFrames[currentActionFrame].movementTranslation);
-                    incrementActionFrame = true;
+                    actionFrames[currentStep].optionalFunction();
                 }
+
             }
-
-            
-
+                
+            // when move is over return true and reset cancel state
             if (currentStep >= totalSteps)
             {
+                playerMovement.cancelState = CancelState.none;
                 return true;
             }
             return false;
@@ -117,10 +149,16 @@ namespace RoundTwoMono
         // renders the hitbox as a red square
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (currentStep == actionFrames[currentActionFrame].activeFrame && actionFrames[currentActionFrame].isMovement)
+            if ( actionFrames.ContainsKey(currentStep))  //&& actionFrames[currentActionFrame].isMovement)
             {
-                spriteBatch.Draw(hitboxTexture, actionFrames[currentActionFrame].hitbox.hitboxBounds, hitboxColor);
+                spriteBatch.Draw(hitboxTexture, actionFrames[currentStep].hitbox.hitboxBounds, hitboxColor);
             }
+        }
+
+        public void CancelAttack()
+        {
+            playerMovement.cancelState = CancelState.none;
+            currentStep = -1;
         }
     }
 
@@ -163,24 +201,67 @@ namespace RoundTwoMono
 
     struct Hitbox
     {
-        public Hitbox( int damage, int hitstun, int blockstun, int pushback, 
-            Rectangle hitboxBounds, Vector2 positionOffset)
+        public Hitbox( int damage, int chipDamage, int hitstun, int blockstun, Vector2 pushback, 
+            Rectangle hitboxBounds, Vector2 positionOffset,  CancelState cancelStrength,HitSpark attackStrength,AttackProperty attackProperty = AttackProperty.Hit, int pushbackDuration =5, int hitStop = -1)
         {
             this.damage = damage;
+            this.chipDamage = chipDamage;
             this.hitstun = hitstun;
             this.blockstun = blockstun;
+            this.pushbackDuration = pushbackDuration;
             this.pushback = pushback;
             this.hitboxBounds = hitboxBounds;
             this.positionOffset = positionOffset;
+            this.attackProperty = attackProperty;
+            this.cancelStrength = cancelStrength;
+            this.attackStrength = attackStrength;
+            moveMasterID = MasterObjectContainer.GetMoveMasterID();
+            moveCurrentUseID = 0;
+            if (hitStop == -1)
+            {
+                if (attackStrength == HitSpark.light)
+                {
+                    this.hitStop = 5;
+                }
+                else if (attackStrength == HitSpark.medium)
+                {
+                    this.hitStop = 7;
+                }
+                else if (attackStrength == HitSpark.heavy)
+                {
+                    this.hitStop = 9;
+                }
+                else
+                {
+                    this.hitStop = 11;
+                }
+            }
+            else {
+                this.hitStop = hitStop;
+            }
         }
 
         
         public int damage;
+        public int chipDamage;
         public int hitstun;
         public int blockstun;
-        public int pushback;
+        public int hitStop;
+        public int pushbackDuration;
+        //public int blockStop; // should this exist?
+        public Vector2 pushback;
         public Rectangle hitboxBounds;
         public Vector2 positionOffset;
+        public CancelState cancelStrength;
+        public HitSpark attackStrength;
+        public AttackProperty attackProperty;
+        public int moveMasterID;
+        public int moveCurrentUseID;
     }
-
+    enum AttackProperty {
+        Throw,
+        Launcher,
+        Kockdown,
+        Hit
+    }
 }

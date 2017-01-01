@@ -53,16 +53,22 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DebugTools.cs" />
     <Compile Include="EngineFang\Animation.cs" />
     <Compile Include="Attack.cs" />
     <Compile Include="ChunLiDriver.cs" />
+    <Compile Include="EngineFang\Camera.cs" />
     <Compile Include="EngineFang\Component.cs" />
     <Compile Include="EngineFang\Entity.cs" />
+    <Compile Include="EngineFang\ObjectPool.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="EngineFang\InputManager.cs" />
+    <Compile Include="health.cs" />
+    <Compile Include="Hitsparks.cs" />
     <Compile Include="MasterObjectContainer.cs" />
     <Compile Include="PlayerMovement.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EngineFang\Renderable.cs" />
     <Compile Include="EngineFang\Scene.cs" />

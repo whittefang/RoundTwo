@@ -12,89 +12,137 @@ namespace RoundTwoMono
 
     class InputManager: Component, Updateable
     {
-        public int playerNumber;
+        public PlayerIndex playerNumber;
         GamePadState state, prevState;
 
         public delegate void voidDel();
         public voidDel aPress, aRelease, bPress, bRelease, xPress, xRelease, yPress, yRelease, rbPress, rbRelease, lbPress, lbRelease;
         public voidDel rtPress, rtRelease, ltPress, ltRelease;
+        public voidDel XAPress,YBPress;
 
+        int bufferRepeatAmount;
+        int bufferRepeatRemaining;
 
+        voidDel bufferButton;
 
-        public InputManager(int playerNumber) {
+        public InputManager(PlayerIndex playerNumber) {
             this.playerNumber = playerNumber;
+            bufferRepeatAmount = 6;
         }
         public void Update() {
             prevState = state;
             state = GamePad.GetState(playerNumber);
-
+            
+            
             // button pressed block
             if (prevState.Buttons.A == ButtonState.Released && state.Buttons.A == ButtonState.Pressed && aPress != null) {
-                aPress();
+                if (!XADoublePress())
+                {
+                    ExecuteButtonBuffer(aPress);
+                }
             }
             if (prevState.Buttons.B == ButtonState.Released && state.Buttons.B == ButtonState.Pressed && bPress != null)
             {
-                bPress();
+                if (!YBDoublePress())
+                {
+                    ExecuteButtonBuffer(bPress);
+                }
             }
             if (prevState.Buttons.X == ButtonState.Released && state.Buttons.X == ButtonState.Pressed &&  xPress != null)
             {
-                xPress();
+                if (!XADoublePress())
+                {
+                    ExecuteButtonBuffer(xPress);
+                }
             }
             if (prevState.Buttons.Y == ButtonState.Released && state.Buttons.Y == ButtonState.Pressed && yPress != null)
             {
-                yPress();
+                if (!YBDoublePress())
+                {
+                    ExecuteButtonBuffer(yPress);
+                }
             }
             if (prevState.Buttons.RightShoulder == ButtonState.Released && state.Buttons.RightShoulder == ButtonState.Pressed && rbPress != null)
             {
-                rbPress();
+                ExecuteButtonBuffer(rbPress);
             }
             if (prevState.Buttons.LeftShoulder == ButtonState.Released && state.Buttons.LeftShoulder == ButtonState.Pressed && lbPress != null)
             {
-                lbPress();
+                ExecuteButtonBuffer(lbPress);
             }
             if (prevState.Triggers.Right < .5  && state.Triggers.Right >= .5 && rtPress != null)
             {
-                rtPress();
+                ExecuteButtonBuffer(rtPress);
             }
             if (prevState.Triggers.Left < .5 && state.Triggers.Left >= .5 && ltPress != null)
             {
-                ltPress();
+                ExecuteButtonBuffer(ltPress);
             }
 
             // button released block
             if (state.Buttons.A == ButtonState.Released && prevState.Buttons.A == ButtonState.Pressed && aRelease != null)
             {
-                aRelease();
+                ExecuteButtonBuffer(aRelease);
             }
             if (state.Buttons.B == ButtonState.Released && prevState.Buttons.B == ButtonState.Pressed && bRelease != null)
             {
-                bRelease();
+                ExecuteButtonBuffer(bRelease);
             }
             if (state.Buttons.X == ButtonState.Released && prevState.Buttons.X == ButtonState.Pressed && xRelease != null)
             {
-                xRelease();
+                ExecuteButtonBuffer(xRelease);
             }
             if (state.Buttons.Y == ButtonState.Released && prevState.Buttons.Y == ButtonState.Pressed && yRelease != null)
             {
-                yRelease();
+                ExecuteButtonBuffer(yRelease);
             }
             if (state.Buttons.RightShoulder == ButtonState.Released && prevState.Buttons.RightShoulder == ButtonState.Pressed && rbRelease != null)
             {
-                rbRelease();
+                ExecuteButtonBuffer(rbRelease);
             }
             if (state.Buttons.LeftShoulder == ButtonState.Released && prevState.Buttons.LeftShoulder == ButtonState.Pressed && lbRelease != null)
             {
-                lbRelease();
+                ExecuteButtonBuffer(lbRelease);
             }
             if (state.Triggers.Right < .5 && prevState.Triggers.Right >= .5 && rtRelease != null)
             {
-                rtRelease();
+                ExecuteButtonBuffer(rtRelease);
             }
             if (state.Triggers.Left < .5 && prevState.Triggers.Left >= .5 && ltRelease != null)
             {
-                ltRelease();
+                ExecuteButtonBuffer(ltRelease);
             }
 
+            if (bufferRepeatRemaining > 0 && bufferButton != null) {
+                bufferButton();
+                bufferRepeatRemaining--;
+            }
+        }
+
+        void ExecuteButtonBuffer(voidDel button) {
+            button();
+            bufferButton = button;
+            bufferRepeatRemaining = bufferRepeatAmount;
+
+        }
+        // returns true if it is a successful input
+        bool XADoublePress() {
+            if (state.Buttons.A == ButtonState.Pressed && state.Buttons.X == ButtonState.Pressed) {
+                ExecuteButtonBuffer( XAPress);
+                return true;
+            }
+            return false;
+
+        }
+        // returns true if it is a successful input
+        bool YBDoublePress()
+        {
+            if (state.Buttons.B == ButtonState.Pressed && state.Buttons.Y == ButtonState.Pressed)
+            {
+                ExecuteButtonBuffer(YBPress);
+                return true;
+            }
+            return false;
         }
         public Vector2 GetRightStick()
         {
