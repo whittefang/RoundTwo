@@ -98,6 +98,8 @@ namespace RoundTwoMono
                     stunMovementRemaining = hitData.pushbackDuration;
                     movementStepSize = hitData.pushback;
 
+                    DealDamage(hitData.damage * comboProration);
+
                     if (playerMovement.GetState() == FighterState.hitstun)
                     {
                         // in combo
@@ -112,7 +114,7 @@ namespace RoundTwoMono
                         comboProration = 1;
                     }
 
-                    if (playerMovement.GetState() == FighterState.jumping || playerMovement.GetState() == FighterState.jumpingAttack || playerMovement.GetState() == FighterState.airHitstun || hitData.attackProperty == AttackProperty.Launcher)
+                    if (playerMovement.GetState() == FighterState.jumping || playerMovement.GetState() == FighterState.jumpingAttack || playerMovement.GetState() == FighterState.airHitstun || hitData.attackProperty == AttackProperty.Launcher || currentHealth <= 0)
                     {
                         playerMovement.SetState(FighterState.airHitstun);
                         animator.PlayAnimation(FigherAnimations.airHit, true);
@@ -122,7 +124,7 @@ namespace RoundTwoMono
                         animator.PlayAnimation(FigherAnimations.hit, true);
                     }
 
-                    DealDamage(hitData.damage * comboProration);
+                    
                     MasterObjectContainer.hitstopRemaining = hitData.hitStop;
                     displayComboData = true;
                     comboFadeBuffer = 30;
@@ -162,7 +164,7 @@ namespace RoundTwoMono
             return successfulHit;
         }
 
-        void DealDamage(float amount)
+        bool DealDamage(float amount)
         {
 
             comboDamage += (int)amount;
@@ -171,10 +173,13 @@ namespace RoundTwoMono
             currentHealth -= amount;
 
             Debug.WriteLine(currentHealth);
-            if (currentHealth >= 0)
+            if (currentHealth <= 0)
             {
                 // resolve death
+                playerMovement.otherPlayerMovement.PlayWin();
+                return true;
             }
+            return false;
 
         }
 
@@ -192,7 +197,7 @@ namespace RoundTwoMono
             // process recovery time from knockdown
             if (recoveryRemaining > 0) {
                 recoveryRemaining--;
-                if (recoveryRemaining == 0) {
+                if (recoveryRemaining == 0 && currentHealth > 0) {
                     playerMovement.SetState(FighterState.neutral);
                 }
             }
@@ -232,7 +237,13 @@ namespace RoundTwoMono
                     {
                         // hitground
                         recoveryRemaining = 80;
-                        animator.PlayAnimation(FigherAnimations.knockdown);
+                        if (currentHealth <= 0)
+                        {
+                            animator.PlayAnimation(FigherAnimations.deathKnockdown);
+                        }
+                        else {
+                            animator.PlayAnimation(FigherAnimations.knockdown);
+                        }
                         playerMovement.SetState(FighterState.invincible);
                     }
                 }

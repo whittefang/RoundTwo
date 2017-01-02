@@ -28,7 +28,7 @@ namespace RoundTwoMono
         public CancelState cancelState;
 
         public float groundBound, leftBound, rightBound;
-        PlayerMovement otherPlayerMovement;
+        public PlayerMovement otherPlayerMovement;
         public bool isFacingLeft { set; get; }
         Vector2 attackDirection;
 
@@ -82,6 +82,12 @@ namespace RoundTwoMono
             playerMovementBox.Y = (int)transform.position.Y - (playerMovementBox.Height);
 
         }
+        public void PlayWin() {
+            CancelActions();
+            SetState(FighterState.invincible);
+            spriteAnimator.PlayAnimation(FigherAnimations.win);
+        }
+
         public void SetJumps(voidDel forward, voidDel back, voidDel neutral) {
             jumpForward = forward;
             jumpBack = back;
@@ -333,6 +339,7 @@ namespace RoundTwoMono
         public void CancelActions() {
             isAttacking = false;
             isJumping = false;
+            cancelState = CancelState.none;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -343,7 +350,7 @@ namespace RoundTwoMono
                 spriteBatch.Draw(groundIcon, groundIconRect, new Color(Color.Purple, .5f));
                 // render movebox
                 spriteBatch.Draw(groundIcon, playerMovementBox, new Color(Color.Blue, .5f));
-                if (currentAttack != null)
+                if (currentAttack != null && isAttacking)
                 {
                     currentAttack.Draw(spriteBatch);
                 }

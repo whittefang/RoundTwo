@@ -111,7 +111,10 @@ namespace RoundTwoMono
         blocking,
         throwTry,
         throwComplete,
-        Super
+        Super,
+        intro,
+        win,
+        deathKnockdown
 
     }
 }

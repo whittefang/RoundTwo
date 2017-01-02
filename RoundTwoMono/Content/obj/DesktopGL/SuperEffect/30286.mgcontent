@@ -3,14 +3,14 @@
   <SourceFile>G:/Git/RoundTwoMono/RoundTwoMono/Content/SuperEffect/30286.png</SourceFile>
   <SourceTime>2005-04-02T12:59:00-06:00</SourceTime>
   <DestFile>G:/Git/RoundTwoMono/RoundTwoMono/Content/bin/DesktopGL/SuperEffect/30286.xnb</DestFile>
-  <DestTime>2016-12-22T14:57:01.1447071-06:00</DestTime>
+  <DestTime>2017-01-01T23:57:44.1807493-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T01:36:08-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
   <ProcessorTime>2016-03-30T01:36:08-05:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
-    <Value>255,0,255,255</Value>
+    <Value>248,0,248,255</Value>
   </Parameters>
   <Parameters>
     <Key>ColorKeyEnabled</Key>

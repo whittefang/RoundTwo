@@ -16,6 +16,7 @@ namespace RoundTwoMono
         Attack light, medium, heavy, sp1, sp2, sp3, super, throwAttack;
         Attack jumpLight, jumpMedium, jumpHeavy;
         Attack jumpForward, jumpBack, jumpNeutral;
+        Attack winAttack, introAttack;
         Projectile fireball;
         InputManager input;
         SpriteAnimator<FigherAnimations> animator;
@@ -48,7 +49,7 @@ namespace RoundTwoMono
 
             light = new Attack(input, transform, playerMovement, FighterState.attackStartup, 10);
             ActionFrame actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(15,1, 10, 8, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
+            actionFrame.setAttack(new Hitbox(400,1, 10, 8, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
             light.AddActionFrame(actionFrame, 2);
 
             medium = new Attack(input, transform, playerMovement, FighterState.attackStartup, 22);
@@ -302,6 +303,9 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(24);
             actionFrame.setMovement(new Vector2(0, 7));
             jumpNeutral.AddActionFrame(actionFrame, 13);
+
+            winAttack = new Attack(input, transform, playerMovement, FighterState.invincible, 500);
+            introAttack = new Attack(input, transform, playerMovement, FighterState.invincible, 60);
 
 
             Animation walkingAnimation = new Animation(animationType.looping);
@@ -665,6 +669,26 @@ namespace RoundTwoMono
             airHit.addFrame(Content.Load<Texture2D>("airhit/SF3_3rd_Chunli_23591"), 1);
             airHit.addFrame(Content.Load<Texture2D>("airhit/SF3_3rd_Chunli_23592"), 1);
 
+
+            Animation deathKnockdown = new Animation(animationType.oneShot);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23593"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23594"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23595"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23596"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23597"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23598"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23599"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23600"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23601"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23602"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23603"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23604"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23605"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23606"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23607"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23608"), 1);
+            deathKnockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23609"), 1);
+
             Animation knockdown = new Animation(animationType.oneShot);
             knockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23593"), 1);
             knockdown.addFrame(Content.Load<Texture2D>("knockdown/SF3_3rd_Chunli_23594"), 1);
@@ -708,7 +732,44 @@ namespace RoundTwoMono
             knockdown.addFrame(Content.Load<Texture2D>("Getup/SF3_3rd_Chunli_23829"), 1);
             knockdown.addFrame(Content.Load<Texture2D>("Getup/SF3_3rd_Chunli_23830"), 1);
 
+            Animation intro = new Animation(animationType.oneShot);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23248"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23249"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23250"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23251"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23252"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23253"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23254"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23255"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23256"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23257"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23258"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23259"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23260"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23261"), 3);
+            intro.addFrame(Content.Load<Texture2D>("intro/SF3_3rd_Chunli_23262"), 3);
 
+            Animation win = new Animation(animationType.oneShot);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24354"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24355"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24356"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24357"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24358"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24354"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24360"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24361"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24362"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24363"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24364"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24365"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24366"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24367"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24386"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24387"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24388"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24389"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24390"), 3);
+            win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24391"), 3);
 
             animator.addAnimation(FigherAnimations.walkToward, walkingAnimation);
             animator.addAnimation(FigherAnimations.neutral, neutralAnimation);
@@ -732,10 +793,16 @@ namespace RoundTwoMono
 
             animator.addAnimation(FigherAnimations.jumpRising, jumpRisingAnimation);
             animator.addAnimation(FigherAnimations.knockdown, knockdown);
+            animator.addAnimation(FigherAnimations.deathKnockdown, deathKnockdown);
 
             animator.addAnimation(FigherAnimations.airHit, airHit);
             animator.addAnimation(FigherAnimations.hit, hitReel);
             animator.addAnimation(FigherAnimations.blocking, blocking);
+
+            animator.addAnimation(FigherAnimations.intro, intro);
+            animator.addAnimation(FigherAnimations.win, win);
+
+
             //animator.addAnimation(FigherAnimations.jumpDecending, jumpDescendingAnimation);
             //animator.addAnimation(FigherAnimations.jumpLanding, jumpLandingAnimation);
 
@@ -822,6 +889,8 @@ namespace RoundTwoMono
             dissipate.addFrame(Content.Load<Texture2D>("kikoken/SF3_3S_Chunli_39426"), 1);
             fireball.SetDissipateAnimation(dissipate);
 
+            playerMovement.StartAttack(introAttack, FigherAnimations.intro);
+        
         }
 
 

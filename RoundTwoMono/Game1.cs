@@ -181,9 +181,12 @@ namespace RoundTwoMono
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(samplerState: SamplerState.PointClamp,transformMatrix: Camera.GetViewMatrix());
+         
             mainScene.Draw(spriteBatch);
             noHitstopScene.Draw(spriteBatch);
             spriteBatch.End();
+
+
             base.Draw(gameTime);
         }
         
