@@ -134,7 +134,9 @@ namespace RoundTwoMono
 
             chun.setOtherPlayer(ref chunli2);
             chun2.setOtherPlayer(ref chunli);
-
+            MasterObjectContainer.playerOneMovement = chunli.getComponent<PlayerMovement>();
+            MasterObjectContainer.playerTwoMovement = chunli2.getComponent<PlayerMovement>();
+            MasterObjectContainer.NextRound();
             //chunAnim.PlayAnimation(FigherAnimations.neutral);
             // TODO: use this.Content to load your game content here
         }
@@ -159,6 +161,7 @@ namespace RoundTwoMono
                 {
 
                     mainScene.Update();
+                    MasterObjectContainer.Update();
                 }
                 else
                 {

@@ -39,16 +39,19 @@ namespace RoundTwoMono
         ObjectPool heavyHitSparks;
         ObjectPool specialHitSparks;
         ObjectPool blockHitSparks;
-
+        bool playerOne = false;
         bool displayComboData, recoveryPeriod;
         public int comboHits, comboDamage, comboFadeBuffer;
 
-        public Health(float maxHealth, PlayerMovement playerMovement, SpriteAnimator<FigherAnimations> animator, PlayerIndex playerNumber)
+        SuperMeter superMeter;
+
+        public Health(float maxHealth, PlayerMovement playerMovement, SpriteAnimator<FigherAnimations> animator, PlayerIndex playerNumber, SuperMeter superMeter)
         {
             maximumHealth = maxHealth;
             currentHealth = maxHealth;
             this.playerMovement = playerMovement;
             this.animator = animator;
+            this.superMeter = superMeter;
             hurtbox = new Rectangle(0, 0, 40, 90);
             hurtboxOrigin = new Vector2(hurtbox.Width / 2, hurtbox.Height);
             hurtboxOffset = new Vector2(0, 0);
@@ -57,6 +60,7 @@ namespace RoundTwoMono
             displayComboData = true;
             if (playerNumber == PlayerIndex.Two)
             {
+                playerOne = true;
                 healthBarRect = new Rectangle(725, 425, 100, 5);
             }
             else
@@ -84,7 +88,7 @@ namespace RoundTwoMono
                     playerMovement.CancelActions();
                     blockstunRemaining = hitData.blockstun;
                     stunMovementRemaining = 5;
-                    movementStepSize = hitData.pushback;
+                    movementStepSize = new Vector2(hitData.pushback.X, 0);
                     playerMovement.SetState(FighterState.blockstun);
                     DealDamage(hitData.chipDamage);
                     animator.PlayAnimation(FigherAnimations.blocking);
@@ -99,7 +103,7 @@ namespace RoundTwoMono
                     movementStepSize = hitData.pushback;
 
                     DealDamage(hitData.damage * comboProration);
-
+                    superMeter.AddMeter((int)(hitData.damage * comboProration * 1.3f));
                     if (playerMovement.GetState() == FighterState.hitstun)
                     {
                         // in combo
@@ -177,6 +181,7 @@ namespace RoundTwoMono
             {
                 // resolve death
                 playerMovement.otherPlayerMovement.PlayWin();
+                MasterObjectContainer.EndRound(playerOne);
                 return true;
             }
             return false;
@@ -202,7 +207,10 @@ namespace RoundTwoMono
                 }
             }
         }
+        public void ResetHealth() {
+            currentHealth = maximumHealth;
 
+        }
         void HealthbarUpdate() {
             healthBarRect.Width = (int)(200f * (currentHealth / maximumHealth));
         }

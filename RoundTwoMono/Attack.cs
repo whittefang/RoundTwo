@@ -119,11 +119,12 @@ namespace RoundTwoMono
                     {
                         Rectangle hitUnion = Rectangle.Intersect(actionFrames[currentStep].hitbox.hitboxBounds, otherHealth.hurtbox);
                         Vector2 hitPoint = new Vector2(hitUnion.X - hitUnion.Width / 2, hitUnion.Y - hitUnion.Height / 2);
-                        // deal damage
-                        otherHealth.ProcessHit(tmp,hitPoint);
+                        
 
                         //TODO: fix cancel state for invincible
                         playerMovement.cancelState = actionFrames[currentStep].hitbox.cancelStrength;
+                        // deal damage
+                        otherHealth.ProcessHit(tmp,hitPoint);
                     }
                 }
 

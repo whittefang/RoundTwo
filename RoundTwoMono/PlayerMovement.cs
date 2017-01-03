@@ -84,10 +84,17 @@ namespace RoundTwoMono
         }
         public void PlayWin() {
             CancelActions();
+            transform.position.Y = 650;
             SetState(FighterState.invincible);
             spriteAnimator.PlayAnimation(FigherAnimations.win);
         }
-
+        public void PlayIntro()
+        {
+            CancelActions();
+            ProcessFacingDirection();
+            SetState(FighterState.invincible);
+            spriteAnimator.PlayAnimation(FigherAnimations.intro);
+        }
         public void SetJumps(voidDel forward, voidDel back, voidDel neutral) {
             jumpForward = forward;
             jumpBack = back;

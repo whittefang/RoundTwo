@@ -19,6 +19,7 @@ namespace RoundTwoMono
         Attack winAttack, introAttack;
         Projectile fireball;
         InputManager input;
+        SuperMeter superMeter;
         SpriteAnimator<FigherAnimations> animator;
         PlayerMovement playerMovement;
         Health health;
@@ -42,14 +43,17 @@ namespace RoundTwoMono
             playerMovement.Load(Content);
             entity.addComponent(playerMovement);
 
+            superMeter = new SuperMeter(playerNumber);
+            superMeter.Load(Content);
+            entity.addComponent(superMeter);
 
-            health = new Health(1000, playerMovement, animator, playerNumber);
+            health = new Health(1000, playerMovement, animator, playerNumber, superMeter);
             entity.addComponent(health);
             health.load(Content);
 
             light = new Attack(input, transform, playerMovement, FighterState.attackStartup, 10);
             ActionFrame actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(400,1, 10, 8, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
+            actionFrame.setAttack(new Hitbox(20,1, 10, 8, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
             light.AddActionFrame(actionFrame, 2);
 
             medium = new Attack(input, transform, playerMovement, FighterState.attackStartup, 22);
@@ -889,7 +893,7 @@ namespace RoundTwoMono
             dissipate.addFrame(Content.Load<Texture2D>("kikoken/SF3_3S_Chunli_39426"), 1);
             fireball.SetDissipateAnimation(dissipate);
 
-            playerMovement.StartAttack(introAttack, FigherAnimations.intro);
+            //playerMovement.StartAttack(introAttack, FigherAnimations.intro);
         
         }
 
@@ -956,6 +960,7 @@ namespace RoundTwoMono
         {
             if (!fireball.isActive && (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy))
             {
+                superMeter.AddMeter(50);
                 playerMovement.StartAttack(sp1, FigherAnimations.sp1);
             }
         }
@@ -972,6 +977,7 @@ namespace RoundTwoMono
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy)
             {
+                superMeter.AddMeter(75);
                 playerMovement.StartAttack(sp2, FigherAnimations.sp2);
             }
         }
@@ -979,13 +985,15 @@ namespace RoundTwoMono
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy)
             {
+                superMeter.AddMeter(75);
                 playerMovement.StartAttack(sp3, FigherAnimations.sp3);
             }
         }
         public void superAttack()
         {
-            if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy || playerMovement.cancelState == CancelState.special)
+            if ((playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy || playerMovement.cancelState == CancelState.special) && superMeter.GetMeter() >= 1000)
             {
+                superMeter.EmptyMeter();
                 playerMovement.transform.position.Y = playerMovement.groundBound;
                 playerMovement.StartAttack(super, FigherAnimations.Super);
             }
