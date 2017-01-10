@@ -15,15 +15,15 @@ namespace RoundTwoMono
         public PlayerIndex playerNumber;
         GamePadState state, prevState;
 
-        public delegate void voidDel();
-        public voidDel aPress, aRelease, bPress, bRelease, xPress, xRelease, yPress, yRelease, rbPress, rbRelease, lbPress, lbRelease;
-        public voidDel rtPress, rtRelease, ltPress, ltRelease;
-        public voidDel XAPress,YBPress;
+        public delegate bool boolDel();
+        public boolDel aPress, aRelease, bPress, bRelease, xPress, xRelease, yPress, yRelease, rbPress, rbRelease, lbPress, lbRelease;
+        public boolDel rtPress, rtRelease, ltPress, ltRelease;
+        public boolDel XAPress,YBPress;
 
         int bufferRepeatAmount;
         int bufferRepeatRemaining;
 
-        voidDel bufferButton;
+        boolDel bufferButton;
 
         public InputManager(PlayerIndex playerNumber) {
             this.playerNumber = playerNumber;
@@ -114,15 +114,25 @@ namespace RoundTwoMono
             }
 
             if (bufferRepeatRemaining > 0 && bufferButton != null) {
-                bufferButton();
-                bufferRepeatRemaining--;
+                bool success = bufferButton();
+                if (success)
+                {
+                    bufferRepeatRemaining = 0;
+                }
+                else
+                {
+                    bufferRepeatRemaining--;
+                }
             }
         }
 
-        void ExecuteButtonBuffer(voidDel button) {
-            button();
+        void ExecuteButtonBuffer(boolDel button) {
+            bool success = button();
             bufferButton = button;
-            bufferRepeatRemaining = bufferRepeatAmount;
+            if (!success)
+            {
+                bufferRepeatRemaining = bufferRepeatAmount;
+            }
 
         }
         // returns true if it is a successful input

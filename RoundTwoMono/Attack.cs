@@ -71,6 +71,9 @@ namespace RoundTwoMono
                     {
                         actionFrames[actionFrame.activeFrame].optionalFunction = actionFrame.optionalFunction;
                     }
+                    if (actionFrame.optionalHitFunction != null) {
+                        actionFrames[actionFrame.activeFrame].optionalHitFunction = actionFrame.optionalHitFunction;
+                    }
                 } else {
                     actionFrames.Add(actionFrame.activeFrame, actionFrame);
                     actionFrame = new ActionFrame(actionFrame);
@@ -125,6 +128,11 @@ namespace RoundTwoMono
                         playerMovement.cancelState = actionFrames[currentStep].hitbox.cancelStrength;
                         // deal damage
                         otherHealth.ProcessHit(tmp,hitPoint);
+
+                        // run optional hit function when we have made contact
+                        if (actionFrames[currentStep].optionalHitFunction != null) {
+                            actionFrames[currentStep].optionalHitFunction();
+                        }
                     }
                 }
 
@@ -175,6 +183,7 @@ namespace RoundTwoMono
             movementTranslation = actionframe.movementTranslation;
             hitbox = actionframe.hitbox;
             optionalFunction = actionframe.optionalFunction;
+            optionalHitFunction = actionframe.optionalHitFunction;
         }
 
         public void setAttack(Hitbox hitbox) {
@@ -196,7 +205,7 @@ namespace RoundTwoMono
         public Vector2 movementTranslation;
         public Hitbox hitbox;
         public delegate void voidDel();
-        public voidDel optionalFunction;
+        public voidDel optionalFunction, optionalHitFunction;
 
     }
 

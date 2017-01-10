@@ -15,6 +15,7 @@ namespace RoundTwoMono
 
         Attack light, medium, heavy, sp1, sp2, sp3, super, throwAttack;
         Attack jumpLight, jumpMedium, jumpHeavy;
+        Attack jumpMediumFollowup;
         Attack jumpForward, jumpBack, jumpNeutral;
         Attack winAttack, introAttack;
         Projectile fireball;
@@ -24,6 +25,8 @@ namespace RoundTwoMono
         PlayerMovement playerMovement;
         Health health;
         bool showHitboxes;
+
+        bool jumpMovesRemaining = false;
 
         public ChunLiDriver()
         {
@@ -53,7 +56,7 @@ namespace RoundTwoMono
 
             light = new Attack(input, transform, playerMovement, FighterState.attackStartup, 10);
             ActionFrame actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(20,1, 10, 8, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
+            actionFrame.setAttack(new Hitbox(20,1, 9, 7, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
             light.AddActionFrame(actionFrame, 2);
 
             medium = new Attack(input, transform, playerMovement, FighterState.attackStartup, 22);
@@ -61,7 +64,7 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(10, 0));
             medium.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(6);
-            actionFrame.setAttack(new Hitbox(50, 1, 13, 12, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(50, -20), CancelState.medium, HitSpark.medium));
+            actionFrame.setAttack(new Hitbox(50, 1, 16, 13, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(50, -20), CancelState.medium, HitSpark.medium));
             medium.AddActionFrame(actionFrame, 2);
 
 
@@ -71,7 +74,7 @@ namespace RoundTwoMono
             heavy.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(8);
             actionFrame.setMovement(new Vector2(40, 0));
-            actionFrame.setAttack(new Hitbox(85, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 60, 10), new Vector2(57, -75), CancelState.heavy, HitSpark.heavy));
+            actionFrame.setAttack(new Hitbox(85, 1, 23, 11, new Vector2(-5, 0), new Rectangle(0, 0, 60, 10), new Vector2(57, -75), CancelState.heavy, HitSpark.heavy));
             heavy.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(26);
             actionFrame.setMovement(new Vector2(-15, 0));
@@ -83,19 +86,43 @@ namespace RoundTwoMono
             jumpLight = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 30);
             jumpLight.isJumpingAttack = true;
             actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(35, 1, 10, 8, new Vector2(-5, 0), new Rectangle(0, 0, 20, 20), new Vector2(55, -70), CancelState.none, HitSpark.light));
+            actionFrame.setAttack(new Hitbox(50, 1, 10, 8, new Vector2(-5, 0), new Rectangle(0, 0, 20, 20), new Vector2(55, -70), CancelState.none, HitSpark.light));
             jumpLight.AddActionFrame(actionFrame, 3);
+
+            jumpMediumFollowup = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 40);
+            for (int i = 0; i < 10; i++)
+            {
+                actionFrame = new ActionFrame(i);
+                actionFrame.setMovement(new Vector2(6, -i));
+                jumpMediumFollowup.AddActionFrame(actionFrame, 1);
+            }
+            for (int i = 10; i < 20; i++)
+            {
+                actionFrame = new ActionFrame(i);
+                actionFrame.setMovement(new Vector2(6, i-10));
+                jumpMediumFollowup.AddActionFrame(actionFrame, 1);
+            }
+            actionFrame = new ActionFrame(20);
+            actionFrame.setMovement(new Vector2(3, 10));
+            jumpMediumFollowup.AddActionFrame(actionFrame, 5);
+            actionFrame = new ActionFrame(25);
+            actionFrame.setMovement(new Vector2(0, 10));
+            jumpMediumFollowup.AddActionFrame(actionFrame, 15);
 
             jumpMedium = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 30);
             jumpMedium.isJumpingAttack = true;
             actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(35, 1, 10, 8, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, -70), CancelState.none, HitSpark.medium));
+            actionFrame.optionalHitFunction = () => { playerMovement.StartAttack(jumpMediumFollowup, FigherAnimations.jumpRising);  playerMovement.CancelJump(); };
+            actionFrame.setAttack(new Hitbox(35, 1, 35, 30, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, -70), CancelState.none, HitSpark.medium));
             jumpMedium.AddActionFrame(actionFrame, 3);
+
+            
+
 
             jumpHeavy = new Attack(input, transform, playerMovement, FighterState.jumpingAttack,30);
             jumpHeavy.isJumpingAttack = true;
             actionFrame = new ActionFrame(7);
-            actionFrame.setAttack(new Hitbox(35, 1, 10, 8, new Vector2(-5, 0), new Rectangle(0, 0, 80, 25), new Vector2(70, -80), CancelState.none, HitSpark.heavy));
+            actionFrame.setAttack(new Hitbox(80, 1, 20, 15, new Vector2(-5, 0), new Rectangle(0, 0, 80, 25), new Vector2(70, -80), CancelState.none, HitSpark.heavy));
             jumpHeavy.AddActionFrame(actionFrame, 6);
 
             sp1 = new Attack(input, transform, playerMovement, FighterState.attackStartup, 54);
@@ -123,7 +150,7 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(3, 1));
             sp2.AddActionFrame(actionFrame, 12);
             actionFrame = new ActionFrame(22);
-            actionFrame.setAttack(new Hitbox(15, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, -80), CancelState.special, HitSpark.special));
+            actionFrame.setAttack(new Hitbox(15, 1, 24, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, -80), CancelState.special, HitSpark.special));
             sp2.AddActionFrame(actionFrame, 2);
             
 
@@ -136,7 +163,7 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(7, 10));
             sp3.AddActionFrame(actionFrame, 8);
             actionFrame = new ActionFrame(16);
-            actionFrame.setAttack(new Hitbox(85, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -10), CancelState.special, HitSpark.special));
+            actionFrame.setAttack(new Hitbox(85, 1, 23, 15, new Vector2(-5, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -10), CancelState.special, HitSpark.special));
             sp3.AddActionFrame(actionFrame, 3);
             actionFrame = new ActionFrame(19);
             actionFrame.optionalFunction = () => { playerMovement.SetState(FighterState.attackRecovery); };
@@ -825,6 +852,7 @@ namespace RoundTwoMono
 
             jumpLight.Load(Content);
             jumpMedium.Load(Content);
+            jumpMediumFollowup.Load(Content);
             jumpHeavy.Load(Content);
 
             // inputs
@@ -923,46 +951,58 @@ namespace RoundTwoMono
         
 
 
-        public void LightAttack()
+        public bool LightAttack()
         {
             if (playerMovement.GetState() == FighterState.neutral)
             {
                 playerMovement.StartAttack(light, FigherAnimations.light);
+                return true;
             } else if (playerMovement.GetState() == FighterState.jumping){
                 playerMovement.StartAttack(jumpLight, FigherAnimations.jumpLight);
+                return true;
             }
+            return false;
         }
 
-        public void MediumAttack()
+        public bool MediumAttack()
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light)
             {
                 playerMovement.StartAttack(medium, FigherAnimations.medium);
+                return true;
             }
-            else if (playerMovement.GetState() == FighterState.jumping)
+            else if (playerMovement.GetState() == FighterState.jumping || (playerMovement.GetState() == FighterState.jumpingAttack && jumpMovesRemaining))
             {
+                jumpMovesRemaining = false;
                 playerMovement.StartAttack(jumpMedium, FigherAnimations.jumpMedium);
+                return true;
             }
+            return false;
         }
 
-        public void HeavyAttack()
+        public bool HeavyAttack()
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.medium)
             {
                 playerMovement.StartAttack(heavy, FigherAnimations.heavy);
+                return true;
             }
             else if (playerMovement.GetState() == FighterState.jumping)
             {
                 playerMovement.StartAttack(jumpHeavy, FigherAnimations.jumpHeavy);
+                return true;
             }
+            return false;
         }
-        public void sp1Attack()
+        public bool sp1Attack()
         {
             if (!fireball.isActive && (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy))
             {
                 superMeter.AddMeter(50);
                 playerMovement.StartAttack(sp1, FigherAnimations.sp1);
+                return true;
             }
+            return false;
         }
         public void ActivateFireabll() {
             
@@ -973,47 +1013,56 @@ namespace RoundTwoMono
                 playerMovement.cancelState = CancelState.special;
             }
         }
-        public void sp2Attack()
+        public bool sp2Attack()
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy)
             {
                 superMeter.AddMeter(75);
                 playerMovement.StartAttack(sp2, FigherAnimations.sp2);
+                return true;
             }
+            return false;
         }
-        public void sp3Attack()
+        public bool sp3Attack()
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy)
             {
                 superMeter.AddMeter(75);
                 playerMovement.StartAttack(sp3, FigherAnimations.sp3);
+                return true;
             }
+            return false;
         }
-        public void superAttack()
+        public bool superAttack()
         {
             if ((playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy || playerMovement.cancelState == CancelState.special) && superMeter.GetMeter() >= 1000)
             {
                 superMeter.EmptyMeter();
                 playerMovement.transform.position.Y = playerMovement.groundBound;
                 playerMovement.StartAttack(super, FigherAnimations.Super);
+                return true;
             }
+            return false;
         }
         public void superHitStopAndEffect() {
             MasterObjectContainer.superEffect.transform.position = transform.position;
             MasterObjectContainer.superEffect.PlayAnimation(superFlash.super, true);
             MasterObjectContainer.hitstopRemaining = 60;
         }
-        public void ThrowAttackFunc()
+        public bool ThrowAttackFunc()
         {
             if (playerMovement.GetState() == FighterState.neutral )
             {
                 playerMovement.StartAttack(throwAttack, FigherAnimations.throwTry);
+                return true;
             }
+            return false;
         }
         public void jumpNeutralFunc() {
             if (playerMovement.GetState() == FighterState.neutral)
             {
                 playerMovement.StartJump(jumpNeutral, FigherAnimations.jumpRising);
+                jumpMovesRemaining = false;
             }
         }
         public void jumpRightFunc()
@@ -1027,6 +1076,7 @@ namespace RoundTwoMono
                 else {
                     playerMovement.StartJump(jumpForward, FigherAnimations.jumpRising);
                 }
+                jumpMovesRemaining = false;
             }
         }
         public void jumpLeftFunc()
@@ -1040,6 +1090,7 @@ namespace RoundTwoMono
                 else {
                     playerMovement.StartJump(jumpBack, FigherAnimations.jumpRising);
                 }
+                jumpMovesRemaining = false;
             }
         }
         

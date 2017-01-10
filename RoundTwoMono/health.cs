@@ -113,8 +113,8 @@ namespace RoundTwoMono
                         }
                     }
                     else {
-                        comboHits = 0;
-                        comboDamage = 0;
+                        comboHits = 1;
+                        comboDamage = hitData.damage;
                         comboProration = 1;
                     }
 

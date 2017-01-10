@@ -348,6 +348,10 @@ namespace RoundTwoMono
             isJumping = false;
             cancelState = CancelState.none;
         }
+        public void CancelJump() {
+
+            isJumping = false;
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {

@@ -125,7 +125,7 @@ namespace RoundTwoMono
             // player one
             var chun = new ChunLiDriver();
             chunli.addComponent(chun);
-            chun.load(this.Content, PlayerIndex.Three);
+            chun.load(this.Content, PlayerIndex.One);
 
             // player two
             var chun2 = new ChunLiDriver();
