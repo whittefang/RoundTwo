@@ -19,8 +19,9 @@ namespace RoundTwoMono.EngineFang
         public static void Init(Viewport viewport) {
             Rotation = 0;
             Zoom = 1;
-            Origin = new Vector2(viewport.Width / 2f, viewport.Height / 2f);
-            Position = Vector2.Zero;
+            //Origin = new Vector2(viewport.Width / 2f, viewport.Height / 2f);
+            Origin = Vector2.Zero;
+            Position = new Vector2(-viewport.Width / 2, -viewport.Height / 2);
             screenSize = 200;
         }
 
@@ -34,7 +35,7 @@ namespace RoundTwoMono.EngineFang
                 Matrix.CreateTranslation(new Vector3(Origin, 0.0f));
         }
         public static float GetBound(bool right = true) {
-            float pos = Origin.X + Position.X;
+            float pos = Origin.X ;
             if (right)
             {
                 pos += screenSize;

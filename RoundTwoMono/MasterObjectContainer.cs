@@ -52,8 +52,8 @@ namespace RoundTwoMono
             
             introFramesRemaining = 120;
             // move players to start position
-            playerOneMovement.transform.position = new Vector3(900, 650, 0);
-            playerTwoMovement.transform.position = new Vector3(1000, 650, 0);
+            playerOneMovement.transform.position = new Vector3(-50, 0, 0);
+            playerTwoMovement.transform.position = new Vector3(50, 0, 0);
             // reset health
             playerOneMovement.entity.getComponent<Health>().ResetHealth();
             playerTwoMovement.entity.getComponent<Health>().ResetHealth();

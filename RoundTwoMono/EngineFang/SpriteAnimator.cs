@@ -73,7 +73,9 @@ namespace RoundTwoMono
         public void Draw(SpriteBatch spriteBatch) {
             if (frameToRender != null )
             {
-                spriteBatch.Draw(frameToRender, transform.getPositionV2() - adjustedOrigin - (renderOffset * renderDirection), color: Color.White, effects: transform.GetHorizontalFlip());
+                //spriteBatch.Draw(frameToRender, transform.getPositionV2() - adjustedOrigin - (renderOffset * renderDirection), color: Color.White, effects: transform.GetHorizontalFlip());
+                spriteBatch.Draw(frameToRender, transform.GetRenderPosition(frameToRender) - (renderOffset * renderDirection), color: Color.White, effects: transform.GetHorizontalFlip());
+
             }
         }
         public void Flip(bool isFacingLeft) {

@@ -53,9 +53,9 @@ namespace RoundTwoMono
             isAttacking = false;
             isJumping = false;
 
-            groundBound = 650;
-            leftBound = 100;
-            rightBound = 1800;
+            groundBound = 0;
+            leftBound = -600;
+            rightBound = 600;
 
             groundIconRect = new Rectangle(2, 2, 4, 4);
             attackDirection = new Vector2(1,1);
@@ -75,16 +75,14 @@ namespace RoundTwoMono
             ProcessMovement();
 
             // update debug ground point
-            groundIconRect.X = (int)transform.position.X - (groundIconRect.Width / 2);
-            groundIconRect.Y = (int)transform.position.Y - (groundIconRect.Height / 2);
-
-            playerMovementBox.X = (int)transform.position.X - (playerMovementBox.Width / 2);
-            playerMovementBox.Y = (int)transform.position.Y - (playerMovementBox.Height);
+            groundIconRect = transform.GetRenderPosition(groundIconRect, TransformOriginPoint.bottom);
+            
+            playerMovementBox =  transform.GetRenderPosition(playerMovementBox, TransformOriginPoint.bottom);
 
         }
         public void PlayWin() {
             CancelActions();
-            transform.position.Y = 650;
+            transform.position.Y = 0;
             SetState(FighterState.invincible);
             spriteAnimator.PlayAnimation(FigherAnimations.win);
         }
@@ -321,7 +319,7 @@ namespace RoundTwoMono
                 addVector.X = leftBound - transform.position.X;
             }
 
-            if (transform.position.Y + addVector.Y > groundBound) {
+            if (transform.position.Y + addVector.Y < groundBound) {
                 // clean for moving too far down
                 addVector.Y = groundBound - transform.position.Y;
             }

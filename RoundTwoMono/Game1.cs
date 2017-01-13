@@ -30,7 +30,7 @@ namespace RoundTwoMono
         {
             // TODO: Add your initialization logic here
             Camera.Init(GraphicsDevice.Viewport);
-            Camera.Zoom = 4;
+            Camera.Zoom = 1f;
             
             chunli = new Entity();
             chunli2 = new Entity();
@@ -70,6 +70,11 @@ namespace RoundTwoMono
 
             SpriteAnimator<superFlash> superEffect = new SpriteAnimator<superFlash>(new Vector2(50,100));
             objectPools.addComponent(superEffect);
+
+            UIMatch ui= new UIMatch();
+            ui.Load(Content);
+
+            objectPools.addComponent(ui);
 
             Animation superAnim = new Animation(animationType.oneShot);
             superAnim.renderOneshotAfterCompletion = false;
@@ -187,6 +192,7 @@ namespace RoundTwoMono
          
             mainScene.Draw(spriteBatch);
             noHitstopScene.Draw(spriteBatch);
+
             spriteBatch.End();
 
 

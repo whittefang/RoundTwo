@@ -114,10 +114,8 @@ namespace RoundTwoMono
                     {
                         actionFrames[currentStep].hitbox.moveCurrentUseID = actionFrames[currentStep-1].hitbox.moveCurrentUseID;
                     }
-                    Hitbox tmp = actionFrames[currentStep].hitbox;
-                    tmp.hitboxBounds.X = (int)(parentTransform.position.X - tmp.hitboxBounds.Width / 2) + (int)(tmp.positionOffset.X * direction.X);
-                    tmp.hitboxBounds.Y = (int)(parentTransform.position.Y + tmp.positionOffset.Y);
-                    actionFrames[currentStep].hitbox = tmp;
+                    
+                    actionFrames[currentStep].hitbox.hitboxBounds = Transform.GetCustomRenderPosition(actionFrames[currentStep].hitbox.hitboxBounds, new Vector2(parentTransform.position.X+(actionFrames[currentStep].hitbox.positionOffset.X * direction.X), parentTransform.position.Y + actionFrames[currentStep].hitbox.positionOffset.Y));
                     if (actionFrames[currentStep].hitbox.hitboxBounds.Intersects(otherHealth.hurtbox))
                     {
                         Rectangle hitUnion = Rectangle.Intersect(actionFrames[currentStep].hitbox.hitboxBounds, otherHealth.hurtbox);
@@ -127,7 +125,7 @@ namespace RoundTwoMono
                         //TODO: fix cancel state for invincible
                         playerMovement.cancelState = actionFrames[currentStep].hitbox.cancelStrength;
                         // deal damage
-                        otherHealth.ProcessHit(tmp,hitPoint);
+                        otherHealth.ProcessHit(actionFrames[currentStep].hitbox, hitPoint);
 
                         // run optional hit function when we have made contact
                         if (actionFrames[currentStep].optionalHitFunction != null) {

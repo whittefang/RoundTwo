@@ -76,6 +76,7 @@
     <Compile Include="EngineFang\Transform.cs" />
     <Compile Include="EngineFang\Updateable.cs" />
     <Compile Include="SuperMeter.cs" />
+    <Compile Include="UIMatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">

@@ -61,11 +61,11 @@ namespace RoundTwoMono
             if (playerNumber == PlayerIndex.Two)
             {
                 playerOne = true;
-                healthBarRect = new Rectangle(725, 425, 100, 5);
+                healthBarRect = new Rectangle(725, 416, 100, 5);
             }
             else
             {
-                healthBarRect = new Rectangle(990, 425, 200, 5);
+                healthBarRect = new Rectangle(990, 416, 200, 5);
             }
         }
 
@@ -191,8 +191,10 @@ namespace RoundTwoMono
         public void Update()
         {
             // move hurtbox
-            hurtbox.X = (int)(transform.position.X - hurtboxOrigin.X - hurtboxOffset.X);
-            hurtbox.Y = (int)(transform.position.Y - hurtboxOrigin.Y - hurtboxOffset.Y);
+
+            hurtbox = transform.GetRenderPosition(hurtbox, TransformOriginPoint.bottom);
+            //hurtbox.X = (int)(transform.position.X - hurtboxOrigin.X - hurtboxOffset.X);
+            //hurtbox.Y = (int)(transform.position.Y - hurtboxOrigin.Y - hurtboxOffset.Y);
 
             // hitstun resolver
             HitstunUpdate();
@@ -290,12 +292,16 @@ namespace RoundTwoMono
 
             if (displayComboData)
             {
-                spriteBatch.DrawString(font, comboHits.ToString(), new Vector2(800, 425), Color.Black,0, Vector2.Zero, .25f,SpriteEffects.None, 0);
+                spriteBatch.DrawString(font, comboHits.ToString(), new Vector2(800, 450), Color.Black,0, Vector2.Zero, .25f,SpriteEffects.None, 0);
                 spriteBatch.DrawString(font, comboDamage.ToString(), new Vector2(800, 450), Color.Black, 0, Vector2.Zero, .25f, SpriteEffects.None, 0);
 
             }
 
             spriteBatch.Draw(healthBar, healthBarRect, Color.Green);
+
+
+            spriteBatch.Draw(hurtboxTexture, new Rectangle(-5, -5, 10, 10), Color.Yellow);
+
         }
 
         public void load(ContentManager content)

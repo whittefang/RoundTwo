@@ -56,7 +56,7 @@ namespace RoundTwoMono
 
             light = new Attack(input, transform, playerMovement, FighterState.attackStartup, 10);
             ActionFrame actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(20,1, 9, 7, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -90), CancelState.light, HitSpark.light));
+            actionFrame.setAttack(new Hitbox(20,1, 9, 7, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, 90), CancelState.light, HitSpark.light));
             light.AddActionFrame(actionFrame, 2);
 
             medium = new Attack(input, transform, playerMovement, FighterState.attackStartup, 22);
@@ -64,7 +64,7 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(10, 0));
             medium.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(6);
-            actionFrame.setAttack(new Hitbox(50, 1, 16, 13, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(50, -20), CancelState.medium, HitSpark.medium));
+            actionFrame.setAttack(new Hitbox(50, 1, 16, 13, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(50, 20), CancelState.medium, HitSpark.medium));
             medium.AddActionFrame(actionFrame, 2);
 
 
@@ -74,7 +74,7 @@ namespace RoundTwoMono
             heavy.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(8);
             actionFrame.setMovement(new Vector2(40, 0));
-            actionFrame.setAttack(new Hitbox(85, 1, 23, 11, new Vector2(-5, 0), new Rectangle(0, 0, 60, 10), new Vector2(57, -75), CancelState.heavy, HitSpark.heavy));
+            actionFrame.setAttack(new Hitbox(85, 1, 23, 11, new Vector2(-5, 0), new Rectangle(0, 0, 60, 10), new Vector2(57, 75), CancelState.heavy, HitSpark.heavy));
             heavy.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(26);
             actionFrame.setMovement(new Vector2(-15, 0));
@@ -86,34 +86,34 @@ namespace RoundTwoMono
             jumpLight = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 30);
             jumpLight.isJumpingAttack = true;
             actionFrame = new ActionFrame(3);
-            actionFrame.setAttack(new Hitbox(50, 1, 10, 8, new Vector2(-5, 0), new Rectangle(0, 0, 20, 20), new Vector2(55, -70), CancelState.none, HitSpark.light));
+            actionFrame.setAttack(new Hitbox(50, 1, 10, 8, new Vector2(-5, 0), new Rectangle(0, 0, 20, 20), new Vector2(55, 70), CancelState.none, HitSpark.light));
             jumpLight.AddActionFrame(actionFrame, 3);
 
             jumpMediumFollowup = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 40);
             for (int i = 0; i < 10; i++)
             {
                 actionFrame = new ActionFrame(i);
-                actionFrame.setMovement(new Vector2(6, -i));
+                actionFrame.setMovement(new Vector2(6, i));
                 jumpMediumFollowup.AddActionFrame(actionFrame, 1);
             }
             for (int i = 10; i < 20; i++)
             {
                 actionFrame = new ActionFrame(i);
-                actionFrame.setMovement(new Vector2(6, i-10));
+                actionFrame.setMovement(new Vector2(6, -i+10));
                 jumpMediumFollowup.AddActionFrame(actionFrame, 1);
             }
             actionFrame = new ActionFrame(20);
-            actionFrame.setMovement(new Vector2(3, 10));
+            actionFrame.setMovement(new Vector2(3, -10));
             jumpMediumFollowup.AddActionFrame(actionFrame, 5);
             actionFrame = new ActionFrame(25);
-            actionFrame.setMovement(new Vector2(0, 10));
+            actionFrame.setMovement(new Vector2(0, -10));
             jumpMediumFollowup.AddActionFrame(actionFrame, 15);
 
             jumpMedium = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 30);
             jumpMedium.isJumpingAttack = true;
             actionFrame = new ActionFrame(3);
             actionFrame.optionalHitFunction = () => { playerMovement.StartAttack(jumpMediumFollowup, FigherAnimations.jumpRising);  playerMovement.CancelJump(); };
-            actionFrame.setAttack(new Hitbox(35, 1, 35, 30, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, -70), CancelState.none, HitSpark.medium));
+            actionFrame.setAttack(new Hitbox(35, 1, 35, 30, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, 70), CancelState.none, HitSpark.medium));
             jumpMedium.AddActionFrame(actionFrame, 3);
 
             
@@ -122,7 +122,7 @@ namespace RoundTwoMono
             jumpHeavy = new Attack(input, transform, playerMovement, FighterState.jumpingAttack,30);
             jumpHeavy.isJumpingAttack = true;
             actionFrame = new ActionFrame(7);
-            actionFrame.setAttack(new Hitbox(80, 1, 20, 15, new Vector2(-5, 0), new Rectangle(0, 0, 80, 25), new Vector2(70, -80), CancelState.none, HitSpark.heavy));
+            actionFrame.setAttack(new Hitbox(80, 1, 20, 15, new Vector2(-5, 0), new Rectangle(0, 0, 80, 25), new Vector2(70, 80), CancelState.none, HitSpark.heavy));
             jumpHeavy.AddActionFrame(actionFrame, 6);
 
             sp1 = new Attack(input, transform, playerMovement, FighterState.attackStartup, 54);
@@ -135,35 +135,35 @@ namespace RoundTwoMono
             actionFrame.optionalFunction =  () => { playerMovement.SetState(FighterState.invincible); };
             sp2.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(8);
-            actionFrame.setMovement(new Vector2(3, -1));
+            actionFrame.setMovement(new Vector2(3, 1));
             sp2.AddActionFrame(actionFrame, 12);
             actionFrame = new ActionFrame(12);
-            actionFrame.setAttack(new Hitbox(15, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, -80), CancelState.special, HitSpark.special));
+            actionFrame.setAttack(new Hitbox(15, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, 80), CancelState.special, HitSpark.special));
             sp2.AddActionFrame(actionFrame, 2);
             actionFrame = new ActionFrame(15);
             actionFrame.optionalFunction = () => { playerMovement.SetState(FighterState.attackRecovery); };
             sp2.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(18);
-            actionFrame.setAttack(new Hitbox(15, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, -80), CancelState.special, HitSpark.special));
+            actionFrame.setAttack(new Hitbox(15, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, 80), CancelState.special, HitSpark.special));
             sp2.AddActionFrame(actionFrame, 2);
             actionFrame = new ActionFrame(20);
-            actionFrame.setMovement(new Vector2(3, 1));
+            actionFrame.setMovement(new Vector2(3, -1));
             sp2.AddActionFrame(actionFrame, 12);
             actionFrame = new ActionFrame(22);
-            actionFrame.setAttack(new Hitbox(15, 1, 24, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, -80), CancelState.special, HitSpark.special));
+            actionFrame.setAttack(new Hitbox(15, 1, 24, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, 80), CancelState.special, HitSpark.special));
             sp2.AddActionFrame(actionFrame, 2);
             
 
             sp3 = new Attack(input, transform, playerMovement, FighterState.attackStartup, 40);
             actionFrame = new ActionFrame(0);
-            actionFrame.setMovement(new Vector2(7, -10));
+            actionFrame.setMovement(new Vector2(7, 10));
             sp3.AddActionFrame(actionFrame, 8);
             actionFrame = new ActionFrame(8);
             actionFrame.optionalFunction = () => { playerMovement.SetState(FighterState.projectileInvincible); };
-            actionFrame.setMovement(new Vector2(7, 10));
+            actionFrame.setMovement(new Vector2(7, -10));
             sp3.AddActionFrame(actionFrame, 8);
             actionFrame = new ActionFrame(16);
-            actionFrame.setAttack(new Hitbox(85, 1, 23, 15, new Vector2(-5, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, -10), CancelState.special, HitSpark.special));
+            actionFrame.setAttack(new Hitbox(85, 1, 23, 15, new Vector2(-5, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, 10), CancelState.special, HitSpark.special));
             sp3.AddActionFrame(actionFrame, 3);
             actionFrame = new ActionFrame(19);
             actionFrame.optionalFunction = () => { playerMovement.SetState(FighterState.attackRecovery); };
@@ -182,75 +182,75 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(10, 0));
             super.AddActionFrame(actionFrame, 11);
             actionFrame = new ActionFrame(17);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(19);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(21);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(23);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -80), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 80), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);            
             actionFrame = new ActionFrame(25);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(27);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(29);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -70), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 70), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(31);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(-10, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -90), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(-10, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 90), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);           
             actionFrame = new ActionFrame(35);
             actionFrame.setMovement(new Vector2(10, 0));
             super.AddActionFrame(actionFrame, 6);
             actionFrame = new ActionFrame(41);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(43);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -70), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 70), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(45);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -80), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 80), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(47);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);            
             actionFrame = new ActionFrame(49);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 100), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(51);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -70), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 70), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(53);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -80), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(0, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 80), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(55);
-            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(-10, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, -50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
+            actionFrame.setAttack(new Hitbox(20, 1, 16, 10, new Vector2(-10, 0), new Rectangle(0, 0, 70, 10), new Vector2(40, 50), CancelState.none, HitSpark.special, hitStop: legsHitStop));
             super.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(62);
             actionFrame.setMovement(new Vector2(10, 0));
             super.AddActionFrame(actionFrame, 7);
             actionFrame = new ActionFrame(68);
-            actionFrame.setAttack(new Hitbox(80, 1, 16, 10, new Vector2(-3, -10), new Rectangle(0, 0, 30, 120), new Vector2(10, -140), CancelState.none, HitSpark.special, AttackProperty.Launcher, 15));
+            actionFrame.setAttack(new Hitbox(80, 1, 16, 10, new Vector2(-3, -10), new Rectangle(0, 0, 30, 120), new Vector2(10, 140), CancelState.none, HitSpark.special, AttackProperty.Launcher, 15));
             super.AddActionFrame(actionFrame, 1);
 
             jumpForward = new Attack(input, transform, playerMovement, FighterState.jumping, 43);
             actionFrame = new ActionFrame(3);
-            actionFrame.setMovement(new Vector2(4, -7));
+            actionFrame.setMovement(new Vector2(4, 7));
             jumpForward.AddActionFrame(actionFrame, 13);
             actionFrame = new ActionFrame(16);
-            actionFrame.setMovement(new Vector2(4, -5));
+            actionFrame.setMovement(new Vector2(4, 5));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(17);
-            actionFrame.setMovement(new Vector2(4, -2));
+            actionFrame.setMovement(new Vector2(4, 2));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(18);
-            actionFrame.setMovement(new Vector2(4, -1));
+            actionFrame.setMovement(new Vector2(4, 1));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(19);
             actionFrame.setMovement(new Vector2(4, 0));
@@ -259,30 +259,30 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(4, 0));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(21);
-            actionFrame.setMovement(new Vector2(4, 1));
+            actionFrame.setMovement(new Vector2(4, -1));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(22);
-            actionFrame.setMovement(new Vector2(4, 2));
+            actionFrame.setMovement(new Vector2(4, -2));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(23);
-            actionFrame.setMovement(new Vector2(4, 5));
+            actionFrame.setMovement(new Vector2(4, -5));
             jumpForward.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(24);
-            actionFrame.setMovement(new Vector2(4, 7));
+            actionFrame.setMovement(new Vector2(4, -7));
             jumpForward.AddActionFrame(actionFrame, 13);
 
             jumpBack = new Attack(input, transform, playerMovement, FighterState.jumping, 43);
             actionFrame = new ActionFrame(3);
-            actionFrame.setMovement(new Vector2(-4, -7));
+            actionFrame.setMovement(new Vector2(-4, 7));
             jumpBack.AddActionFrame(actionFrame, 13);
             actionFrame = new ActionFrame(16);
-            actionFrame.setMovement(new Vector2(-4, -5));
+            actionFrame.setMovement(new Vector2(-4, 5));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(17);
-            actionFrame.setMovement(new Vector2(-4, -2));
+            actionFrame.setMovement(new Vector2(-4, 2));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(18);
-            actionFrame.setMovement(new Vector2(-4, -1));
+            actionFrame.setMovement(new Vector2(-4, 1));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(19);
             actionFrame.setMovement(new Vector2(-4, 0));
@@ -291,30 +291,30 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(-4, 0));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(21);
-            actionFrame.setMovement(new Vector2(-4, 1));
+            actionFrame.setMovement(new Vector2(-4, -1));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(22);
-            actionFrame.setMovement(new Vector2(-4, 2));
+            actionFrame.setMovement(new Vector2(-4, -2));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(23);
-            actionFrame.setMovement(new Vector2(-4, 5));
+            actionFrame.setMovement(new Vector2(-4, -5));
             jumpBack.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(24);
-            actionFrame.setMovement(new Vector2(-4, 7));
+            actionFrame.setMovement(new Vector2(-4, -7));
             jumpBack.AddActionFrame(actionFrame, 13);
 
             jumpNeutral = new Attack(input, transform, playerMovement, FighterState.jumping, 43);
             actionFrame = new ActionFrame(3);
-            actionFrame.setMovement(new Vector2(0, -7));
+            actionFrame.setMovement(new Vector2(0, 7));
             jumpNeutral.AddActionFrame(actionFrame, 13);
             actionFrame = new ActionFrame(16);
-            actionFrame.setMovement(new Vector2(0, -5));
+            actionFrame.setMovement(new Vector2(0, 5));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(17);
-            actionFrame.setMovement(new Vector2(0, -2));
+            actionFrame.setMovement(new Vector2(0, 2));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(18);
-            actionFrame.setMovement(new Vector2(0, -1));
+            actionFrame.setMovement(new Vector2(0, 1));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(19);
             actionFrame.setMovement(new Vector2(0, 0));
@@ -323,16 +323,16 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(0, 0));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(21);
-            actionFrame.setMovement(new Vector2(0, 1));
+            actionFrame.setMovement(new Vector2(0, -1));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(22);
-            actionFrame.setMovement(new Vector2(0, 2));
+            actionFrame.setMovement(new Vector2(0, -2));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(23);
-            actionFrame.setMovement(new Vector2(0, 5));
+            actionFrame.setMovement(new Vector2(0, -5));
             jumpNeutral.AddActionFrame(actionFrame, 1);
             actionFrame = new ActionFrame(24);
-            actionFrame.setMovement(new Vector2(0, 7));
+            actionFrame.setMovement(new Vector2(0, -7));
             jumpNeutral.AddActionFrame(actionFrame, 13);
 
             winAttack = new Attack(input, transform, playerMovement, FighterState.invincible, 500);
@@ -870,10 +870,12 @@ namespace RoundTwoMono
 
             if (playerNumber == PlayerIndex.Two)
             {
-                transform.position = new Vector3(800, 650, 0);
+                //transform.position = new Vector3(800, 650, 0);
+                transform.position = new Vector3(0, 0, 0);
+
             }
             else {
-                transform.position = new Vector3(1000, 650, 0);
+                transform.position = new Vector3(0, 0, 0);
             }
 
             // projectile setup
@@ -885,7 +887,7 @@ namespace RoundTwoMono
             projectile.addComponent(fireball);
             fireball.Load(Content);
             fireball.movementVector = new Vector2(5,0);
-            fireball.SpawnPoint = new Vector2(60, -60);
+            fireball.SpawnPoint = new Vector2(60, 60);
             fireball.optionalFunction = FireballHit;
 
             Animation active = new Animation(animationType.looping);

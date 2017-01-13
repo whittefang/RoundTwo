@@ -99,7 +99,7 @@ namespace RoundTwoMono
         }
 
         public void Play(Vector2 position) {
-            transform.position = new Vector3(position.X, position.Y, 0);
+            transform.position = new Vector3(position.X, -position.Y, 0);
             timeLeftEnabled = 30;
             enabled = true;
             animator.PlayAnimation(type, true);

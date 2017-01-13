@@ -67,8 +67,7 @@ namespace RoundTwoMono
             
 
             transform.position = position +new Vector3( SpawnPoint.X, SpawnPoint.Y, 0);
-            hitData.hitboxBounds.X = (int)(transform.position.X - hitData.hitboxBounds.Width / 2);
-            hitData.hitboxBounds.Y = (int)(transform.position.Y - hitData.hitboxBounds.Height / 2);
+            hitData.hitboxBounds = transform.GetRenderPosition(hitData.hitboxBounds);
             hitData.moveCurrentUseID++;
             animator.PlayAnimation(ProjectileAnim.active);
             isActive = true;
@@ -83,8 +82,7 @@ namespace RoundTwoMono
             {
                 // move projectile
                 transform.Translate(movementVector);
-                hitData.hitboxBounds.X = (int)(transform.position.X - hitData.hitboxBounds.Width / 2);
-                hitData.hitboxBounds.Y = (int)(transform.position.Y - hitData.hitboxBounds.Height / 2);
+                hitData.hitboxBounds = transform.GetRenderPosition(hitData.hitboxBounds);
                 // check for hit
                 if (hitData.hitboxBounds.Intersects(otherHealth.hurtbox)) {
                     // deal damage

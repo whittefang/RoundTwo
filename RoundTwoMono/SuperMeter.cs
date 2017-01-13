@@ -15,15 +15,15 @@ namespace RoundTwoMono
 
         Texture2D barTexture;
         Rectangle barRect;
-        const float rectangleWidth = 50;
+        const float rectangleWidth = 80;
 
         public SuperMeter(PlayerIndex playerNumber) {
             if (playerNumber == PlayerIndex.Two)
             {
-                barRect = new Rectangle(725, 650, 50, 5);
+                barRect = new Rectangle(768, 657, (int)rectangleWidth, 5);
             }
             else {
-                barRect = new Rectangle(1100, 650, 50, 5);
+                barRect = new Rectangle(1069, 657, (int)rectangleWidth, 5);
             }
             currentMeter = 000;
             AdjustBar();

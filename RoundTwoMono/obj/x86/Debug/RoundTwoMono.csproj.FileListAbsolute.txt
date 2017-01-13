@@ -507,3 +507,124 @@ G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\Win\SF3_3rd_Chu
 G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\Win\SF3_3rd_Chunli_24389.xnb
 G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\Win\SF3_3rd_Chunli_24390.xnb
 G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\Win\SF3_3rd_Chunli_24391.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\DoubleKoText (1).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\DoubleKoText (2).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\DoubleKoText (3).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (1).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (10).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (11).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (12).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (13).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (14).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (15).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (16).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (17).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (18).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (19).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (2).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (20).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (21).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (22).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (23).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (24).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (25).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (26).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (27).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (28).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (29).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (3).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (30).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (31).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (32).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (33).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (4).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (5).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (6).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (7).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (8).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\FightText (9).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\hpBar.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\hpBarLeft.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ko (1).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ko (2).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ko (3).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (1).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (10).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (11).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (12).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (13).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (14).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (15).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (16).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (17).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (18).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (19).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (2).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (20).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (21).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (22).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (23).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (24).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (25).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (26).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (27).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (28).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (29).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (3).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (30).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (31).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (32).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (33).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (34).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (35).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (36).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (37).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (38).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (39).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (4).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (40).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (41).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (42).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (43).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (44).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (45).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (46).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (47).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (48).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (49).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (5).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (50).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (51).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (52).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (53).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (54).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (55).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (56).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (57).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (58).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (59).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (6).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (7).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (8).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\roundText (9).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\superBarLeft.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\SuperBarRIght.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\timeText (1).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\timeText (2).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\timeText (3).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_0-4.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_1-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_10-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_2-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_5-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_5-1.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\ui_5-2.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (1).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (2).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (3).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (4).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (5).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (6).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (7).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (8).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (9).xnb
