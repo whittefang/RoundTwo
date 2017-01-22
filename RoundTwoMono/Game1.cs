@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RoundTwoMono.EngineFang;
+using EngineFang;
 namespace RoundTwoMono
 {
     /// <summary>
@@ -13,6 +13,7 @@ namespace RoundTwoMono
         SpriteBatch spriteBatch;
         Scene mainScene, noHitstopScene;
         Entity chunli, chunli2;
+        Entity stageEntity;
         Entity objectPools;
         DebugTools debugTools;
        
@@ -29,12 +30,12 @@ namespace RoundTwoMono
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Camera.Init(GraphicsDevice.Viewport);
-            Camera.Zoom = 1f;
+            Camera.Init(GraphicsDevice.Viewport, 4.5f);
             
             chunli = new Entity();
             chunli2 = new Entity();
             objectPools = new Entity();
+            stageEntity = new Entity();
             mainScene = new Scene();
             noHitstopScene = new Scene();
             debugTools = new DebugTools();
@@ -45,9 +46,11 @@ namespace RoundTwoMono
         
         protected override void LoadContent()
         {
+            Camera.SetPosition(new Vector2(0, 110));
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            mainScene.addEntity(stageEntity);
             mainScene.addEntity(chunli);
             mainScene.addEntity(chunli2);
             noHitstopScene.addEntity(objectPools);
@@ -71,10 +74,30 @@ namespace RoundTwoMono
             SpriteAnimator<superFlash> superEffect = new SpriteAnimator<superFlash>(new Vector2(50,100));
             objectPools.addComponent(superEffect);
 
-            UIMatch ui= new UIMatch();
-            ui.Load(Content);
+            
+            UIMatch.Load(Content);
 
-            objectPools.addComponent(ui);
+            Stage stage = new Stage();
+            Texture2D stagePic = Content.Load<Texture2D>("stages/gouki/gouki_0-0");
+            StagePart akumaMoon = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 260), TransformOriginPoint.center), stagePic, 0);
+            stage.AddStagePart(akumaMoon);
+
+            stagePic = Content.Load<Texture2D>("stages/gouki/gouki_1-0");
+            StagePart akumaMountain = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 250), TransformOriginPoint.center), stagePic, 0);
+            stage.AddStagePart(akumaMountain);
+
+             stagePic = Content.Load<Texture2D>("stages/gouki/gouki_2-0");
+            StagePart akumaLeftFore = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 220), TransformOriginPoint.right), stagePic, 0);
+            stage.AddStagePart(akumaLeftFore);
+
+            stagePic = Content.Load<Texture2D>("stages/gouki/gouki_2-1");
+            StagePart akumaRightFore = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 220), TransformOriginPoint.left), stagePic, 0);
+            stage.AddStagePart(akumaRightFore);
+
+           
+
+            stageEntity.addComponent(stage);
+
 
             Animation superAnim = new Animation(animationType.oneShot);
             superAnim.renderOneshotAfterCompletion = false;
@@ -185,7 +208,7 @@ namespace RoundTwoMono
         
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(samplerState: SamplerState.PointClamp,transformMatrix: Camera.GetViewMatrix());
@@ -194,6 +217,12 @@ namespace RoundTwoMono
             noHitstopScene.Draw(spriteBatch);
 
             spriteBatch.End();
+
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.GetUIMatrix());
+            UIMatch.Draw(spriteBatch);
+
+            spriteBatch.End();
+
 
 
             base.Draw(gameTime);

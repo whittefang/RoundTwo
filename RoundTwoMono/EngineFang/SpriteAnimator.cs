@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace RoundTwoMono
+namespace EngineFang
 {
     class SpriteAnimator<TEnum> : Component, Updateable, Renderable
     {

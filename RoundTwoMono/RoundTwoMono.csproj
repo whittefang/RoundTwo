@@ -75,6 +75,8 @@
     <Compile Include="EngineFang\SpriteAnimator.cs" />
     <Compile Include="EngineFang\Transform.cs" />
     <Compile Include="EngineFang\Updateable.cs" />
+    <Compile Include="stage.cs" />
+    <Compile Include="StagePart.cs" />
     <Compile Include="SuperMeter.cs" />
     <Compile Include="UIMatch.cs" />
   </ItemGroup>

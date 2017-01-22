@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using EngineFang;
 
 namespace RoundTwoMono
 {
@@ -30,7 +31,7 @@ namespace RoundTwoMono
             currentMoveID++;
             return currentMoveID;
         }
-        public static void EndRound(bool playerOneWon ) {
+        public static void EndRound(bool playerOneWon) {
             if (playerOneWon)
             {
                 playerOneWins++;
@@ -47,9 +48,9 @@ namespace RoundTwoMono
             // ui black screen wipe
         }
         public static void NextRound() {
-            
 
-            
+
+
             introFramesRemaining = 120;
             // move players to start position
             playerOneMovement.transform.position = new Vector3(-50, 0, 0);
@@ -57,7 +58,7 @@ namespace RoundTwoMono
             // reset health
             playerOneMovement.entity.getComponent<Health>().ResetHealth();
             playerTwoMovement.entity.getComponent<Health>().ResetHealth();
-            
+
             // play intro animations
             playerOneMovement.PlayIntro();
             playerTwoMovement.PlayIntro();
@@ -70,6 +71,9 @@ namespace RoundTwoMono
         }
         public static void Update()
         {
+
+            MoveCamera();
+
             if (introFramesRemaining > 0)
             {
                 // play neutral animations after intro finishes
@@ -106,7 +110,25 @@ namespace RoundTwoMono
                 roundEndFramesRemaining--;
             }
         }
+
+        // adjust camera to be inbetween players
+        static void MoveCamera()
+        {
+            
+            float x = (playerOneMovement.transform.position.X + playerTwoMovement.transform.position.X)/2;
+            float y = (playerOneMovement.transform.position.Y + playerTwoMovement.transform.position.Y) / 2;
+
+            // adjust for lower bound
+            if (y < 110) {
+                y = 110;
+            }
+            Vector2 midpoint = new Vector2(x, y);
+
+            Camera.SetPosition(midpoint);
+        }
     }
+
+    
 
     enum superFlash {
         none,

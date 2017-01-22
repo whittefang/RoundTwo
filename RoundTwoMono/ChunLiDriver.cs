@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using EngineFang;
 
 namespace RoundTwoMono
 {
@@ -47,7 +48,7 @@ namespace RoundTwoMono
             entity.addComponent(playerMovement);
 
             superMeter = new SuperMeter(playerNumber);
-            superMeter.Load(Content);
+            //superMeter.Load(Content);
             entity.addComponent(superMeter);
 
             health = new Health(1000, playerMovement, animator, playerNumber, superMeter);

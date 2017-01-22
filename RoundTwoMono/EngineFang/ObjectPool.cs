@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
+using RoundTwoMono;
 
-namespace RoundTwoMono.EngineFang
+namespace EngineFang
 {
     class ObjectPool : Component
     {

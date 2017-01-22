@@ -6,24 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using EngineFang;
 namespace RoundTwoMono
 {
-    class SuperMeter: Component, Renderable
+    class SuperMeter: Component
     {
         const float superMeterMaximum = 1000;
         float currentMeter = 0;
 
-        Texture2D barTexture;
-        Rectangle barRect;
-        const float rectangleWidth = 80;
+        bool isPlayerOne = false;
 
         public SuperMeter(PlayerIndex playerNumber) {
             if (playerNumber == PlayerIndex.Two)
             {
-                barRect = new Rectangle(768, 657, (int)rectangleWidth, 5);
-            }
-            else {
-                barRect = new Rectangle(1069, 657, (int)rectangleWidth, 5);
+                isPlayerOne = true;
             }
             currentMeter = 000;
             AdjustBar();
@@ -39,20 +35,16 @@ namespace RoundTwoMono
         public float GetMeter() {
             return currentMeter;
         }
-        public void Load(ContentManager content) {
-            barTexture = content.Load<Texture2D>("square");
-        }
+        
         public void EmptyMeter() {
             currentMeter = 0;
             AdjustBar();
         }
         void AdjustBar() {
-            barRect.Width = (int)((currentMeter/superMeterMaximum)*rectangleWidth) ;
+            UIMatch.SuperbarUpdate((currentMeter / superMeterMaximum), isPlayerOne);
         }
 
-        public void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(barTexture, barRect, Color.Blue);
-        }
+        
 
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using RoundTwoMono.EngineFang;
+using EngineFang;
 
 namespace RoundTwoMono
 {

@@ -628,3 +628,16 @@ G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (6)
 G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (7).xnb
 G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (8).xnb
 G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\ui\winIcons (9).xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_0-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_1-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_1-1.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_2-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_2-1.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_3-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_4-0.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_4-1.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_4-2.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_4-3.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_4-4.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_4-5.xnb
+G:\Git\RoundTwoMono\RoundTwoMono\bin\DesktopGL\x86\Debug\Content\stages\gouki\gouki_900-1.xnb

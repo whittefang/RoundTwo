@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using RoundTwoMono.EngineFang;
+using EngineFang;
 
 namespace RoundTwoMono
 {
@@ -21,6 +21,8 @@ namespace RoundTwoMono
         Vector2 hurtboxOrigin;
         Vector2 hurtboxOffset;
 
+        
+
         PlayerMovement playerMovement;
         SpriteAnimator<FigherAnimations> animator;
 
@@ -30,8 +32,10 @@ namespace RoundTwoMono
 
         Hitbox previousAttack;
 
-        Texture2D healthBar, healthBarArt;
-        Rectangle healthBarRect;
+        
+
+        
+        
 
         SpriteFont font;
         ObjectPool lightHitSparks;
@@ -61,12 +65,8 @@ namespace RoundTwoMono
             if (playerNumber == PlayerIndex.Two)
             {
                 playerOne = true;
-                healthBarRect = new Rectangle(725, 416, 100, 5);
             }
-            else
-            {
-                healthBarRect = new Rectangle(990, 416, 200, 5);
-            }
+           
         }
 
         // returns true if attack is successful and false if it has 'missed' eg invincible 
@@ -214,7 +214,7 @@ namespace RoundTwoMono
 
         }
         void HealthbarUpdate() {
-            healthBarRect.Width = (int)(200f * (currentHealth / maximumHealth));
+            UIMatch.HealthbarUpdate((currentHealth / maximumHealth), playerOne);
         }
 
         void HitstunUpdate() {
@@ -297,7 +297,7 @@ namespace RoundTwoMono
 
             }
 
-            spriteBatch.Draw(healthBar, healthBarRect, Color.Green);
+            //spriteBatch.Draw(healthBar, healthBarRect, Color.Green);
 
 
             spriteBatch.Draw(hurtboxTexture, new Rectangle(-5, -5, 10, 10), Color.Yellow);
@@ -308,7 +308,6 @@ namespace RoundTwoMono
         {
 
             hurtboxTexture = content.Load<Texture2D>("square");
-            healthBar = content.Load<Texture2D>("square");
             font = content.Load<SpriteFont>("arial");
             foreach (ObjectPool h in MasterObjectContainer.hitSparkHolder.getComponents<ObjectPool>())
             {
