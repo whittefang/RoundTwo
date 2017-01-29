@@ -18,6 +18,7 @@ namespace RoundTwoMono
         public static bool advanceOneFrame = false;
         public static int hitstopRemaining = 0;
         static int currentMoveID = 0;
+        public static float LevelMaxBoundry = 235;
 
         public static Entity hitSparkHolder;
         public static SpriteAnimator<superFlash> superEffect;
@@ -30,6 +31,10 @@ namespace RoundTwoMono
         static public int GetMoveMasterID() {
             currentMoveID++;
             return currentMoveID;
+        }
+        static public void FillSuper() {
+            playerOneMovement.entity.getComponent<SuperMeter>().AddMeter(1000);
+            playerTwoMovement.entity.getComponent<SuperMeter>().AddMeter(1000);
         }
         public static void EndRound(bool playerOneWon) {
             if (playerOneWon)
@@ -118,9 +123,15 @@ namespace RoundTwoMono
             float x = (playerOneMovement.transform.position.X + playerTwoMovement.transform.position.X)/2;
             float y = (playerOneMovement.transform.position.Y + playerTwoMovement.transform.position.Y) / 2;
 
+            if (x > LevelMaxBoundry) {
+                x = LevelMaxBoundry;
+            } else if (x < -LevelMaxBoundry) {
+                x = -LevelMaxBoundry;
+            }
+
             // adjust for lower bound
-            if (y < 110) {
-                y = 110;
+            if (y < 90) {
+                y = 90;
             }
             Vector2 midpoint = new Vector2(x, y);
 

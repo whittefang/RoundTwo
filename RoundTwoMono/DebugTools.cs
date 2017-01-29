@@ -30,6 +30,9 @@ namespace RoundTwoMono
             {
                 MasterObjectContainer.advanceOneFrame = true;
             }
+            if (state.IsKeyDown(Keys.F2) && preState.IsKeyUp(Keys.F2)) {
+                MasterObjectContainer.FillSuper();
+            }
 
         }
     }

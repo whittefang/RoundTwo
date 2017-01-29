@@ -114,7 +114,7 @@ namespace RoundTwoMono
             jumpMedium.isJumpingAttack = true;
             actionFrame = new ActionFrame(3);
             actionFrame.optionalHitFunction = () => { playerMovement.StartAttack(jumpMediumFollowup, FigherAnimations.jumpRising);  playerMovement.CancelJump(); };
-            actionFrame.setAttack(new Hitbox(35, 1, 35, 30, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, 70), CancelState.none, HitSpark.medium));
+            actionFrame.setAttack(new Hitbox(35, 1, 35, 30, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, 40), CancelState.none, HitSpark.medium));
             jumpMedium.AddActionFrame(actionFrame, 3);
 
             
@@ -237,7 +237,7 @@ namespace RoundTwoMono
             actionFrame.setMovement(new Vector2(10, 0));
             super.AddActionFrame(actionFrame, 7);
             actionFrame = new ActionFrame(68);
-            actionFrame.setAttack(new Hitbox(80, 1, 16, 10, new Vector2(-3, -10), new Rectangle(0, 0, 30, 120), new Vector2(10, 140), CancelState.none, HitSpark.special, AttackProperty.Launcher, 15));
+            actionFrame.setAttack(new Hitbox(80, 1, 16, 10, new Vector2(-3, 10), new Rectangle(0, 0, 30, 120), new Vector2(10, 80), CancelState.none, HitSpark.special, AttackProperty.Launcher, 15));
             super.AddActionFrame(actionFrame, 1);
 
             jumpForward = new Attack(input, transform, playerMovement, FighterState.jumping, 43);

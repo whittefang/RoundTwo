@@ -79,14 +79,14 @@ namespace RoundTwoMono
 
             Stage stage = new Stage();
             Texture2D stagePic = Content.Load<Texture2D>("stages/gouki/gouki_0-0");
-            StagePart akumaMoon = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 260), TransformOriginPoint.center), stagePic, 0);
+            StagePart akumaMoon = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 260), TransformOriginPoint.center), stagePic, .4f);
             stage.AddStagePart(akumaMoon);
 
             stagePic = Content.Load<Texture2D>("stages/gouki/gouki_1-0");
-            StagePart akumaMountain = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 250), TransformOriginPoint.center), stagePic, 0);
+            StagePart akumaMountain = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 250), TransformOriginPoint.center), stagePic, .35f);
             stage.AddStagePart(akumaMountain);
 
-             stagePic = Content.Load<Texture2D>("stages/gouki/gouki_2-0");
+            stagePic = Content.Load<Texture2D>("stages/gouki/gouki_2-0");
             StagePart akumaLeftFore = new StagePart(Transform.GetCustomRenderPosition(stagePic, new Vector2(0, 220), TransformOriginPoint.right), stagePic, 0);
             stage.AddStagePart(akumaLeftFore);
 

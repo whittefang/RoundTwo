@@ -37,14 +37,14 @@ namespace RoundTwoMono
         
         
 
-        SpriteFont font;
+        
         ObjectPool lightHitSparks;
         ObjectPool mediumHitSparks;
         ObjectPool heavyHitSparks;
         ObjectPool specialHitSparks;
         ObjectPool blockHitSparks;
         bool playerOne = false;
-        bool displayComboData, recoveryPeriod;
+        bool  recoveryPeriod;
         public int comboHits, comboDamage, comboFadeBuffer;
 
         SuperMeter superMeter;
@@ -61,7 +61,6 @@ namespace RoundTwoMono
             hurtboxOffset = new Vector2(0, 0);
             comboHits = 0;
             comboDamage = 0;
-            displayComboData = true;
             if (playerNumber == PlayerIndex.Two)
             {
                 playerOne = true;
@@ -90,7 +89,7 @@ namespace RoundTwoMono
                     stunMovementRemaining = 5;
                     movementStepSize = new Vector2(hitData.pushback.X, 0);
                     playerMovement.SetState(FighterState.blockstun);
-                    DealDamage(hitData.chipDamage);
+                    DealDamage(hitData.chipDamage, true);
                     animator.PlayAnimation(FigherAnimations.blocking);
                 }
                 else if (playerMovement.GetState() != FighterState.invincible)
@@ -118,6 +117,8 @@ namespace RoundTwoMono
                         comboProration = 1;
                     }
 
+                    UIMatch.ComboTextUpdate(comboDamage, comboHits, playerOne);
+
                     if (playerMovement.GetState() == FighterState.jumping || playerMovement.GetState() == FighterState.jumpingAttack || playerMovement.GetState() == FighterState.airHitstun || hitData.attackProperty == AttackProperty.Launcher || currentHealth <= 0)
                     {
                         playerMovement.SetState(FighterState.airHitstun);
@@ -130,7 +131,6 @@ namespace RoundTwoMono
 
                     
                     MasterObjectContainer.hitstopRemaining = hitData.hitStop;
-                    displayComboData = true;
                     comboFadeBuffer = 30;
 
                     if (hitData.attackStrength == HitSpark.light)
@@ -168,7 +168,7 @@ namespace RoundTwoMono
             return successfulHit;
         }
 
-        bool DealDamage(float amount)
+        bool DealDamage(float amount, bool chip = false)
         {
 
             comboDamage += (int)amount;
@@ -179,10 +179,13 @@ namespace RoundTwoMono
             Debug.WriteLine(currentHealth);
             if (currentHealth <= 0)
             {
-                // resolve death
-                playerMovement.otherPlayerMovement.PlayWin();
-                MasterObjectContainer.EndRound(playerOne);
-                return true;
+                if (!chip)
+                {
+                    // resolve death
+                    playerMovement.otherPlayerMovement.PlayWin();
+                    MasterObjectContainer.EndRound(playerOne);
+                    return true;
+                }
             }
             return false;
 
@@ -242,8 +245,8 @@ namespace RoundTwoMono
                     stunMovementRemaining--;
                 }
                 else {
-                    playerMovement.MoveTowards(new Vector2(0, 10));
-                    if (transform.position.Y >= playerMovement.groundBound)
+                    playerMovement.MoveTowards(new Vector2(0, -10));
+                    if (transform.position.Y <= playerMovement.groundBound)
                     {
                         // hitground
                         recoveryRemaining = 80;
@@ -279,7 +282,7 @@ namespace RoundTwoMono
                 comboFadeBuffer--;
             }
             else {
-                displayComboData = false;
+                UIMatch.HideComboText(playerOne);
             }
         }
 
@@ -290,12 +293,7 @@ namespace RoundTwoMono
                 spriteBatch.Draw(hurtboxTexture, hurtbox, new Color(Color.Green, .5f));
             }
 
-            if (displayComboData)
-            {
-                spriteBatch.DrawString(font, comboHits.ToString(), new Vector2(800, 450), Color.Black,0, Vector2.Zero, .25f,SpriteEffects.None, 0);
-                spriteBatch.DrawString(font, comboDamage.ToString(), new Vector2(800, 450), Color.Black, 0, Vector2.Zero, .25f, SpriteEffects.None, 0);
-
-            }
+           
 
             //spriteBatch.Draw(healthBar, healthBarRect, Color.Green);
 
@@ -308,7 +306,7 @@ namespace RoundTwoMono
         {
 
             hurtboxTexture = content.Load<Texture2D>("square");
-            font = content.Load<SpriteFont>("arial");
+            
             foreach (ObjectPool h in MasterObjectContainer.hitSparkHolder.getComponents<ObjectPool>())
             {
                 if (h.type == HitSpark.light)

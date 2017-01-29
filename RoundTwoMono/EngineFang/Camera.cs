@@ -20,7 +20,8 @@ namespace EngineFang
             Rotation = 0;
             Camera.Zoom = Zoom;
             //Origin = new Vector2(viewport.Width / 2f, viewport.Height / 2f);
-            Origin = new Vector2((-viewport.Width / Zoom) / 2, (-viewport.Height / Zoom) / 2);
+            Origin = new Vector2(((float)-viewport.Width / Zoom) / 2f, (-viewport.Height / Zoom) / 2);
+           
             Position = Vector2.Zero;
             screenSize = (viewport.Width/Zoom)/2;
         }
@@ -31,8 +32,9 @@ namespace EngineFang
                 Matrix.CreateTranslation(new Vector3(-Position, 0.0f)) *
                 Matrix.CreateTranslation(new Vector3(-Origin, 0.0f)) *
                 Matrix.CreateRotationZ(Rotation) *
-                Matrix.CreateScale(Zoom, Zoom, 1) *
-                Matrix.CreateTranslation(new Vector3(Origin, 0.0f));
+                Matrix.CreateScale(Zoom, Zoom, 1); 
+                //WARNING: possible furture problems with excluding second origin
+                //Matrix.CreateTranslation(new Vector3(Origin, 0.0f));
         }
         public static Matrix GetUIMatrix()
         {
@@ -52,14 +54,16 @@ namespace EngineFang
             Position = newPosition;
         }
         public static float GetBound(bool right = true) {
+            float buffer = 30;
+
             float pos = Position.X ;
             if (right)
             {
-                pos += screenSize;
+                pos += screenSize - buffer;
             }
             else
             {
-                pos -= screenSize;
+                pos -= screenSize -buffer;
 
             }
             return pos;

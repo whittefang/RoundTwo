@@ -87,8 +87,11 @@ namespace RoundTwoMono
                 // check for hit
                 if (hitData.hitboxBounds.Intersects(otherHealth.hurtbox)) {
                     // deal damage
-                    // TODO: Fix for proper positionaing
-                    if (otherHealth.ProcessHit(hitData, Vector2.Zero)) {
+                   
+                    Rectangle hitUnion = Rectangle.Intersect(hitData.hitboxBounds, otherHealth.hurtbox);
+                    Vector2 hitPoint = new Vector2(hitUnion.X - hitUnion.Width / 2, hitUnion.Y - hitUnion.Height / 2);
+
+                    if (otherHealth.ProcessHit(hitData, hitPoint)) {
                         Dissipate();
                         if (optionalFunction != null) {
                             optionalFunction();

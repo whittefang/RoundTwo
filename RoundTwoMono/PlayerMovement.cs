@@ -106,6 +106,7 @@ namespace RoundTwoMono
         // handle beginning of jump command
         public void StartJump(Attack newJump, FigherAnimations newAnimation)
         {
+            
             currentJump = newJump;
             SetState(newJump.state);
             spriteAnimator.PlayAnimation(newAnimation, true);
@@ -117,6 +118,7 @@ namespace RoundTwoMono
         // handle beginning of attack command
         public void StartAttack(Attack newAttack, FigherAnimations newAnimation)
         {
+            ProcessFacingDirection();
             currentAttack = newAttack;
             SetState(newAttack.state);
             spriteAnimator.PlayAnimation(newAnimation, true);
@@ -185,7 +187,7 @@ namespace RoundTwoMono
 
             // jump movement block
             if (inputAxis.Y > .5f) {
-               
+                ProcessFacingDirection();
                 if (inputAxis.X > DeadSize) {
                     // jump right
                     jumpForward();
@@ -268,33 +270,44 @@ namespace RoundTwoMono
             playerMovementBox.X = (int)(transform.position.X + addVector.X - (playerMovementBox.Width / 2));
             playerMovementBox.Y = (int)(transform.position.Y + addVector.Y - (playerMovementBox.Height));
 
-            // TODO: resolve for jumping into other player
+            // TODO: fix crash for pusing over 0,0
 
             if (playerMovementBox.Intersects(otherPlayerMovement.playerMovementBox)) {
                 // check for moving into other player and disallow it
-                if (transform.position.X > otherPlayerMovement.transform.position.X && addVector.X < 0)
+                if (transform.position.X > otherPlayerMovement.transform.position.X && !(addVector.X > 0))
                 {
                     // right player(us) is trying to move into the left player
                     // resolve if other needs to be pushed or movement needs to be stopped
 
                     // calculate amount of pushing
                     // calcuate the bounds of rectangles and amount of overlap, pushamount is the amount and direction to move other player
-                    float pushAmount =  (transform.position.X + addVector.X - playerMovementBox.Width / 2) - (otherPlayerMovement.transform.position.X + otherPlayerMovement.playerMovementBox.Width / 2);
+                    float pushAmount = (transform.position.X + addVector.X - playerMovementBox.Width / 2) - (otherPlayerMovement.transform.position.X + otherPlayerMovement.playerMovementBox.Width / 2);
                     otherPlayerMovement.TryMove(new Vector2(pushAmount, 0));
                     // calcualte new movement vector based on how far other player was successfully pushed
-                    addVector.X = (otherPlayerMovement.transform.position.X + otherPlayerMovement.playerMovementBox.Width / 2) -(transform.position.X  - playerMovementBox.Width / 2);
+                    addVector.X = (otherPlayerMovement.transform.position.X + otherPlayerMovement.playerMovementBox.Width / 2) - (transform.position.X - playerMovementBox.Width / 2);
                 }
-                else if (transform.position.X < otherPlayerMovement.transform.position.X && addVector.X > 0)
+                else if (transform.position.X < otherPlayerMovement.transform.position.X && !(addVector.X < 0))
                 {
                     // left player(us) is trying to move into right player
                     // resolve if other needs to be pushed or movement needs to be stopped
 
                     // calculate amount of pushing
                     // calcuate the bounds of rectangles and amount of overlap, pushamount is the amount and direction to move other player
-                    float pushAmount =   (transform.position.X + addVector.X + playerMovementBox.Width / 2) - (otherPlayerMovement.transform.position.X - otherPlayerMovement.playerMovementBox.Width / 2);
+                    float pushAmount = (transform.position.X + addVector.X + playerMovementBox.Width / 2) - (otherPlayerMovement.transform.position.X - otherPlayerMovement.playerMovementBox.Width / 2);
                     otherPlayerMovement.TryMove(new Vector2(pushAmount, 0));
                     // calcualte new movement vector based on how far other player was successfully pushed
-                    addVector.X = (otherPlayerMovement.transform.position.X - otherPlayerMovement.playerMovementBox.Width / 2) - (transform.position.X  + playerMovementBox.Width / 2);
+                    addVector.X = (otherPlayerMovement.transform.position.X - otherPlayerMovement.playerMovementBox.Width / 2) - (transform.position.X + playerMovementBox.Width / 2);
+                } else if (transform.position.X == otherPlayerMovement.transform.position.X) {
+                    // we are trying to jump into the corner
+                    // resolve by pusing towards center
+                    //WARNING: current calculation may not suffice for a variety of different sized moveboxes
+                    if (transform.position.X < 0)
+                    {
+                        otherPlayerMovement.TryMove(new Vector2(40, 0));
+                    }
+                    else {
+                        otherPlayerMovement.TryMove(new Vector2(-40, 0));
+                    }
                 }
                 
 
