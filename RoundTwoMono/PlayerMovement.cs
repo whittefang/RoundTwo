@@ -12,7 +12,7 @@ namespace RoundTwoMono
 {
 
 
-    class PlayerMovement: Component, Updateable, Renderable
+    class PlayerMovement : Component, Updateable, Renderable
     {
 
         public delegate void voidDel();
@@ -23,11 +23,11 @@ namespace RoundTwoMono
 
         static float DeadSize = .15f;
 
-        SpriteAnimator<FigherAnimations> spriteAnimator;
+        SpriteAnimator<FighterAnimations> spriteAnimator;
         FighterState state;
         public CancelState cancelState;
 
-        public float groundBound, leftBound, rightBound;
+        public float groundBound;
         public PlayerMovement otherPlayerMovement;
         public bool isFacingLeft { set; get; }
         Vector2 attackDirection;
@@ -38,12 +38,14 @@ namespace RoundTwoMono
         Rectangle groundIconRect;
 
         Rectangle playerMovementBox;
-            
+
+        Boolean playerMovementBoxEnabled = true;
+
         public PlayerMovement() {
             state = FighterState.neutral;
             speed = 0;
         }
-        public PlayerMovement(InputManager input, SpriteAnimator<FigherAnimations> spriteAnimator, float speed) {
+        public PlayerMovement(InputManager input, SpriteAnimator<FighterAnimations> spriteAnimator, float speed) {
             state = FighterState.neutral;
             cancelState = CancelState.none;
             this.input = input;
@@ -54,11 +56,9 @@ namespace RoundTwoMono
             isJumping = false;
 
             groundBound = 0;
-            leftBound = -600;
-            rightBound = 600;
 
             groundIconRect = new Rectangle(2, 2, 4, 4);
-            attackDirection = new Vector2(1,1);
+            attackDirection = new Vector2(1, 1);
 
             playerMovementBox = new Rectangle(20, 10, 40, 10); ;
 
@@ -76,27 +76,27 @@ namespace RoundTwoMono
 
             // update debug ground point
             groundIconRect = transform.GetRenderPosition(groundIconRect, TransformOriginPoint.bottom);
-            
-            playerMovementBox =  transform.GetRenderPosition(playerMovementBox, TransformOriginPoint.bottom);
+
+            playerMovementBox = transform.GetRenderPosition(playerMovementBox, TransformOriginPoint.bottom);
 
         }
         public void PlayWin() {
             CancelActions();
             transform.position.Y = 0;
             SetState(FighterState.invincible);
-            spriteAnimator.PlayAnimation(FigherAnimations.win);
+            spriteAnimator.PlayAnimation(FighterAnimations.win);
         }
         public void PlayIntro()
         {
             CancelActions();
             ProcessFacingDirection();
             SetState(FighterState.invincible);
-            spriteAnimator.PlayAnimation(FigherAnimations.intro);
+            spriteAnimator.PlayAnimation(FighterAnimations.intro);
         }
         public void SetJumps(voidDel forward, voidDel back, voidDel neutral) {
             jumpForward = forward;
             jumpBack = back;
-            jumpNeutral = neutral;   
+            jumpNeutral = neutral;
         }
 
         public void SetOtherPlayer(PlayerMovement otherPlayerMovement) {
@@ -104,9 +104,9 @@ namespace RoundTwoMono
         }
 
         // handle beginning of jump command
-        public void StartJump(Attack newJump, FigherAnimations newAnimation)
+        public void StartJump(Attack newJump, FighterAnimations newAnimation)
         {
-            
+
             currentJump = newJump;
             SetState(newJump.state);
             spriteAnimator.PlayAnimation(newAnimation, true);
@@ -116,9 +116,12 @@ namespace RoundTwoMono
         }
 
         // handle beginning of attack command
-        public void StartAttack(Attack newAttack, FigherAnimations newAnimation)
+        public void StartAttack(Attack newAttack, FighterAnimations newAnimation, bool allowFlip = true)
         {
-            ProcessFacingDirection();
+            if (allowFlip)
+            {
+                ProcessFacingDirection();
+            }
             currentAttack = newAttack;
             SetState(newAttack.state);
             spriteAnimator.PlayAnimation(newAnimation, true);
@@ -157,7 +160,7 @@ namespace RoundTwoMono
         }
 
         // handle facing direction updates
-        void ProcessFacingDirection(){
+        void ProcessFacingDirection() {
             if (transform.position.X > otherPlayerMovement.transform.position.X && !isFacingLeft)
             {
                 transform.flipRenderingHorizontal = true;
@@ -174,7 +177,7 @@ namespace RoundTwoMono
             }
         }
 
-        
+
         // take in stick position and move character accordingly
         void ProcessMovement() {
 
@@ -212,10 +215,10 @@ namespace RoundTwoMono
                 {
                     if (isFacingLeft)
                     {
-                        spriteAnimator.PlayAnimation(FigherAnimations.walkBack);
-                    }else
+                        spriteAnimator.PlayAnimation(FighterAnimations.walkBack);
+                    } else
                     {
-                        spriteAnimator.PlayAnimation(FigherAnimations.walkToward);
+                        spriteAnimator.PlayAnimation(FighterAnimations.walkToward);
                     }
                     direction = 1;
                 }
@@ -223,11 +226,11 @@ namespace RoundTwoMono
                 {
                     if (isFacingLeft)
                     {
-                        spriteAnimator.PlayAnimation(FigherAnimations.walkToward);
+                        spriteAnimator.PlayAnimation(FighterAnimations.walkToward);
                     }
                     else
                     {
-                        spriteAnimator.PlayAnimation(FigherAnimations.walkBack);
+                        spriteAnimator.PlayAnimation(FighterAnimations.walkBack);
                     }
                     direction = -1;
                 }
@@ -235,13 +238,13 @@ namespace RoundTwoMono
 
             }
             else {
-                spriteAnimator.PlayAnimation(FigherAnimations.neutral);
+                spriteAnimator.PlayAnimation(FighterAnimations.neutral);
             }
-            
 
-            
 
-            
+
+
+
         }
 
         public void SetInputManager(InputManager input) {
@@ -272,7 +275,7 @@ namespace RoundTwoMono
 
             // TODO: fix crash for pusing over 0,0
 
-            if (playerMovementBox.Intersects(otherPlayerMovement.playerMovementBox)) {
+            if (playerMovementBox.Intersects(otherPlayerMovement.playerMovementBox) && playerMovementBoxEnabled) {
                 // check for moving into other player and disallow it
                 if (transform.position.X > otherPlayerMovement.transform.position.X && !(addVector.X > 0))
                 {
@@ -309,7 +312,7 @@ namespace RoundTwoMono
                         otherPlayerMovement.TryMove(new Vector2(-40, 0));
                     }
                 }
-                
+
 
             }
             // check for camera bound
@@ -324,12 +327,12 @@ namespace RoundTwoMono
                 addVector.X = Camera.GetBound(false) - transform.position.X;
             }
 
-            if (transform.position.X + addVector.X > rightBound) {
+            if (transform.position.X + addVector.X > Camera.GetBound()) {
                 // clean for moving further than right bound
-                addVector.X = rightBound - transform.position.X;
-            } else if (transform.position.X + addVector.X < leftBound) {
+                addVector.X = Camera.GetBound() - transform.position.X;
+            } else if (transform.position.X + addVector.X < Camera.GetBound(false)) {
                 // clean for mocing further than left bound
-                addVector.X = leftBound - transform.position.X;
+                addVector.X = Camera.GetBound() - transform.position.X;
             }
 
             if (transform.position.Y + addVector.Y < groundBound) {
@@ -342,7 +345,9 @@ namespace RoundTwoMono
             playerMovementBox.X = (int)transform.position.X - (playerMovementBox.Width / 2);
             playerMovementBox.Y = (int)transform.position.Y - (playerMovementBox.Height);
         }
-
+        public void EnableMovementCollision(bool enabled) {
+            playerMovementBoxEnabled = enabled;
+        }
         public bool CheckIfBlocking()
         {
             if (isFacingLeft && input.GetLeftStick().X > 0) {

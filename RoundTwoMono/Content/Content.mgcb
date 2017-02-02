@@ -7615,3 +7615,117 @@
 /processorParam:TextureFormat=Color
 /build:stages/gouki/gouki_900-1.png
 
+#begin 3rdStrikeSounds/Chunli/ehh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/ehh.wav
+
+#begin 3rdStrikeSounds/Chunli/hazanshu.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/hazanshu.wav
+
+#begin 3rdStrikeSounds/Chunli/hump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/hump.wav
+
+#begin 3rdStrikeSounds/Chunli/hurt.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/hurt.wav
+
+#begin 3rdStrikeSounds/Chunli/Intro.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/Intro.wav
+
+#begin 3rdStrikeSounds/Chunli/kikoken.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/kikoken.wav
+
+#begin 3rdStrikeSounds/Chunli/sbk.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/sbk.wav
+
+#begin 3rdStrikeSounds/Chunli/win.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/win.wav
+
+#begin 3rdStrikeSounds/Chunli/yea.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Chunli/yea.wav
+
+#begin 3rdStrikeSounds/block.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/block.wav
+
+#begin 3rdStrikeSounds/fireball.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/fireball.wav
+
+#begin 3rdStrikeSounds/Grab.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/Grab.wav
+
+#begin 3rdStrikeSounds/hitHeavy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/hitHeavy.wav
+
+#begin 3rdStrikeSounds/hitLight.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/hitLight.wav
+
+#begin 3rdStrikeSounds/hitMedium.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/hitMedium.wav
+
+#begin 3rdStrikeSounds/jumpLanding.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/jumpLanding.wav
+
+#begin 3rdStrikeSounds/jumpRise.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/jumpRise.wav
+
+#begin Music\ChunLiStage.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music\ChunLiStage.mp3
+
+#begin 3rdStrikeSounds/super.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:3rdStrikeSounds/super.wav
+

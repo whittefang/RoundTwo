@@ -638,5 +638,24 @@
     <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/stages/gouki/gouki_4-4.png</File>
     <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/stages/gouki/gouki_4-5.png</File>
     <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/stages/gouki/gouki_900-1.png</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/ehh.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/hazanshu.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/hump.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/hurt.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/Intro.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/kikoken.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/sbk.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/win.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/yea.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/block.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/fireball.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Grab.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/hitHeavy.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/hitLight.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/hitMedium.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/jumpLanding.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/jumpRise.wav</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/Music/ChunLiStage.mp3</File>
+    <File>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/super.wav</File>
   </SourceFiles>
 </SourceFileCollection>

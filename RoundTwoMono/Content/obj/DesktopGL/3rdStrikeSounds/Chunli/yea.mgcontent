@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>G:/Git/RoundTwoMono/RoundTwoMono/Content/3rdStrikeSounds/Chunli/yea.wav</SourceFile>
+  <SourceTime>2008-02-21T13:25:34-06:00</SourceTime>
+  <DestFile>G:/Git/RoundTwoMono/RoundTwoMono/Content/bin/DesktopGL/3rdStrikeSounds/Chunli/yea.xnb</DestFile>
+  <DestTime>2017-01-30T22:06:39.8336901-06:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2016-03-30T01:36:08-05:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2016-03-30T01:36:08-05:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

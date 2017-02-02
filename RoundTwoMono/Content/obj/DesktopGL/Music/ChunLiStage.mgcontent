@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>G:/Git/RoundTwoMono/RoundTwoMono/Content/Music/ChunLiStage.mp3</SourceFile>
+  <SourceTime>2017-01-31T18:00:00.8104205-06:00</SourceTime>
+  <DestFile>G:/Git/RoundTwoMono/RoundTwoMono/Content/bin/DesktopGL/Music/ChunLiStage.xnb</DestFile>
+  <DestTime>2017-01-31T18:04:35.0888047-06:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2016-03-30T01:36:08-05:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2016-03-30T01:36:08-05:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>G:/Git/RoundTwoMono/RoundTwoMono/Content/bin/DesktopGL/Music/ChunLiStage.ogg</string>
+  </BuildOutput>
+</PipelineBuildEvent>

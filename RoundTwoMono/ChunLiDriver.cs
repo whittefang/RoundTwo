@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using EngineFang;
 
 namespace RoundTwoMono
@@ -14,16 +15,18 @@ namespace RoundTwoMono
     class ChunLiDriver : Component
     {
 
-        Attack light, medium, heavy, sp1, sp2, sp3, super, throwAttack;
+        Attack light, medium, heavy, sp1, sp2, sp3, super, throwTry, throwAttack;
         Attack jumpLight, jumpMedium, jumpHeavy;
         Attack jumpMediumFollowup;
         Attack jumpForward, jumpBack, jumpNeutral;
         Attack winAttack, introAttack;
+        Attack chunLiThrown;
         Projectile fireball;
         InputManager input;
         SuperMeter superMeter;
-        SpriteAnimator<FigherAnimations> animator;
+        SpriteAnimator<FighterAnimations> animator;
         PlayerMovement playerMovement;
+        FighterSound soundPlayer;
         Health health;
         bool showHitboxes;
 
@@ -40,7 +43,7 @@ namespace RoundTwoMono
             input = new InputManager(playerNumber);
             entity.addComponent(input);
 
-            animator = new SpriteAnimator<FigherAnimations>(new Vector2(-10, 75));
+            animator = new SpriteAnimator<FighterAnimations>(new Vector2(-10, 75));
             entity.addComponent(animator);
 
             playerMovement = new PlayerMovement(input, animator, 5f);
@@ -51,14 +54,41 @@ namespace RoundTwoMono
             //superMeter.Load(Content);
             entity.addComponent(superMeter);
 
-            health = new Health(1000, playerMovement, animator, playerNumber, superMeter);
+            soundPlayer = new FighterSound();
+            entity.addComponent(soundPlayer);
+
+            health = new Health(1000, playerMovement, animator, playerNumber, superMeter, soundPlayer);
             entity.addComponent(health);
             health.load(Content);
+
+            // Sound Block
+            
+
+            soundPlayer.light = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/hump");
+            soundPlayer.medium = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/yea");
+            soundPlayer.heavy = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/ehh");
+
+            soundPlayer.sp1 = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/kikoken");
+            soundPlayer.sp2 = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/sbk");
+            soundPlayer.sp3 = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/hazanshu");
+
+            soundPlayer.win = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/win");
+            soundPlayer.intro = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/intro");
+
+            soundPlayer.jumpRise = Content.Load<SoundEffect>("3rdStrikeSounds/jumpRise");
+            soundPlayer.jumpLand = Content.Load<SoundEffect>("3rdStrikeSounds/jumpLanding");
+
+            soundPlayer.hit = Content.Load<SoundEffect>("3rdStrikeSounds/Chunli/hurt");
+            
+            // attack block
 
             light = new Attack(input, transform, playerMovement, FighterState.attackStartup, 10);
             ActionFrame actionFrame = new ActionFrame(3);
             actionFrame.setAttack(new Hitbox(20,1, 9, 7, new Vector2(-7, 0), new Rectangle(0, 0, 70, 10), new Vector2(50, 90), CancelState.light, HitSpark.light));
             light.AddActionFrame(actionFrame, 2);
+            actionFrame = new ActionFrame(3);
+            actionFrame.optionalSound = soundPlayer.light;
+            light.AddActionFrame(actionFrame);
 
             medium = new Attack(input, transform, playerMovement, FighterState.attackStartup, 22);
             actionFrame = new ActionFrame(2);
@@ -67,7 +97,9 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(6);
             actionFrame.setAttack(new Hitbox(50, 1, 16, 13, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(50, 20), CancelState.medium, HitSpark.medium));
             medium.AddActionFrame(actionFrame, 2);
-
+            actionFrame = new ActionFrame(3);
+            actionFrame.optionalSound = soundPlayer.medium;
+            medium.AddActionFrame(actionFrame);
 
             heavy = new Attack(input, transform, playerMovement, FighterState.attackStartup, 32);
             actionFrame = new ActionFrame(7);
@@ -82,6 +114,9 @@ namespace RoundTwoMono
             heavy.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(32);
             actionFrame.setMovement(new Vector2(-15, 0));
+            heavy.AddActionFrame(actionFrame);
+            actionFrame = new ActionFrame(3);
+            actionFrame.optionalSound = soundPlayer.heavy;
             heavy.AddActionFrame(actionFrame);
 
             jumpLight = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 30);
@@ -113,7 +148,7 @@ namespace RoundTwoMono
             jumpMedium = new Attack(input, transform, playerMovement, FighterState.jumpingAttack, 30);
             jumpMedium.isJumpingAttack = true;
             actionFrame = new ActionFrame(3);
-            actionFrame.optionalHitFunction = () => { playerMovement.StartAttack(jumpMediumFollowup, FigherAnimations.jumpRising);  playerMovement.CancelJump(); };
+            actionFrame.optionalHitFunction = () => { playerMovement.StartAttack(jumpMediumFollowup, FighterAnimations.jumpRising);  playerMovement.CancelJump(); };
             actionFrame.setAttack(new Hitbox(35, 1, 35, 30, new Vector2(-5, 0), new Rectangle(0, 0, 20, 70), new Vector2(0, 40), CancelState.none, HitSpark.medium));
             jumpMedium.AddActionFrame(actionFrame, 3);
 
@@ -129,6 +164,9 @@ namespace RoundTwoMono
             sp1 = new Attack(input, transform, playerMovement, FighterState.attackStartup, 54);
             actionFrame = new ActionFrame(14);
             actionFrame.optionalFunction = ActivateFireabll;
+            sp1.AddActionFrame(actionFrame);
+            actionFrame = new ActionFrame(3);
+            actionFrame.optionalSound = soundPlayer.sp1;
             sp1.AddActionFrame(actionFrame);
 
             sp2 = new Attack(input, transform, playerMovement, FighterState.attackStartup, 45);
@@ -153,7 +191,9 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(22);
             actionFrame.setAttack(new Hitbox(15, 1, 24, 10, new Vector2(-5, 0), new Rectangle(0, 0, 100, 10), new Vector2(30, 80), CancelState.special, HitSpark.special));
             sp2.AddActionFrame(actionFrame, 2);
-            
+            actionFrame = new ActionFrame(3);
+            actionFrame.optionalSound = soundPlayer.sp2;
+            sp2.AddActionFrame(actionFrame);
 
             sp3 = new Attack(input, transform, playerMovement, FighterState.attackStartup, 40);
             actionFrame = new ActionFrame(0);
@@ -169,14 +209,48 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(19);
             actionFrame.optionalFunction = () => { playerMovement.SetState(FighterState.attackRecovery); };
             sp3.AddActionFrame(actionFrame, 1);
+            actionFrame = new ActionFrame(3);
+            actionFrame.optionalSound = soundPlayer.sp3;
+            sp3.AddActionFrame(actionFrame);
 
-            throwAttack = new Attack(input, transform, playerMovement, FighterState.attackStartup, 40);
+            throwAttack = new Attack(input, transform, playerMovement, FighterState.invincible, 40);
+            actionFrame = new ActionFrame(0);
+            actionFrame.optionalFunction = () => { playerMovement.EnableMovementCollision(false); };
+            throwAttack.AddActionFrame(actionFrame);
+            actionFrame = new ActionFrame(0);
+            actionFrame.setMovement(new Vector2(7, 0));
+            throwAttack.AddActionFrame(actionFrame, 15);
+            actionFrame = new ActionFrame(15);
+            actionFrame.optionalFunction = () => { playerMovement.EnableMovementCollision(true); };
+            throwAttack.AddActionFrame(actionFrame);
+
+            throwTry = new Attack(input, transform, playerMovement, FighterState.attackStartup, 40);
+            actionFrame = new ActionFrame(6);
+            actionFrame.setAttack(new Hitbox(150, 0, 40, 0, new Vector2(-5, 0), new Rectangle(0, 0, 80, 10), new Vector2(30, 80), CancelState.none, HitSpark.light, AttackProperty.Throw, throwType: ThrowType.chun));
+            actionFrame.optionalHitFunction = () => { playerMovement.StartAttack(throwAttack, FighterAnimations.throwComplete); };
+            throwTry.AddActionFrame(actionFrame);
+
+            chunLiThrown = new Attack(input, transform, playerMovement, FighterState.invincible, 95);
+            actionFrame = new ActionFrame(16);
+            actionFrame.setMovement(new Vector2(-20, 0));
+            actionFrame.optionalFunction = () => { playerMovement.EnableMovementCollision(false); };
+            chunLiThrown.AddActionFrame(actionFrame, 4);
+            actionFrame = new ActionFrame(20);
+            actionFrame.optionalFunction = () => { animator.PlayAnimation(FighterAnimations.knockdown); };
+            chunLiThrown.AddActionFrame(actionFrame);
+            actionFrame = new ActionFrame(21);
+            actionFrame.setMovement(new Vector2(-8, 0));
+           chunLiThrown.AddActionFrame(actionFrame, 10);
+            actionFrame = new ActionFrame(31);
+            actionFrame.optionalFunction = () => { playerMovement.EnableMovementCollision(true); };
+            chunLiThrown.AddActionFrame(actionFrame);
 
             int legsHitStop = 4;
 
             super = new Attack(input, transform, playerMovement, FighterState.attackStartup, 90);
             actionFrame = new ActionFrame(2);
             actionFrame.optionalFunction = superHitStopAndEffect;
+            //actionFrame.setOptionalSound(MasterSound.super);
             super.AddActionFrame(actionFrame, 1);
             
             actionFrame = new ActionFrame(5);
@@ -240,7 +314,11 @@ namespace RoundTwoMono
             actionFrame.setAttack(new Hitbox(80, 1, 16, 10, new Vector2(-3, 10), new Rectangle(0, 0, 30, 120), new Vector2(10, 80), CancelState.none, HitSpark.special, AttackProperty.Launcher, 15));
             super.AddActionFrame(actionFrame, 1);
 
+            
             jumpForward = new Attack(input, transform, playerMovement, FighterState.jumping, 43);
+            //actionFrame = new ActionFrame(3);
+            //actionFrame.optionalSound = soundPlayer.jumpRise;
+            //jumpForward.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(3);
             actionFrame.setMovement(new Vector2(4, 7));
             jumpForward.AddActionFrame(actionFrame, 13);
@@ -271,10 +349,16 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(24);
             actionFrame.setMovement(new Vector2(4, -7));
             jumpForward.AddActionFrame(actionFrame, 13);
+            //actionFrame = new ActionFrame(38);
+            //actionFrame.optionalSound = soundPlayer.jumpLand;
+            //jumpForward.AddActionFrame(actionFrame);
 
             jumpBack = new Attack(input, transform, playerMovement, FighterState.jumping, 43);
+            //actionFrame = new ActionFrame(3);
+            //actionFrame.optionalSound = soundPlayer.jumpRise;
+            //jumpBack.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(3);
-            actionFrame.setMovement(new Vector2(-4, 7));
+            actionFrame.setMovement(new Vector2(-4, 7));            
             jumpBack.AddActionFrame(actionFrame, 13);
             actionFrame = new ActionFrame(16);
             actionFrame.setMovement(new Vector2(-4, 5));
@@ -303,8 +387,14 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(24);
             actionFrame.setMovement(new Vector2(-4, -7));
             jumpBack.AddActionFrame(actionFrame, 13);
+            //actionFrame = new ActionFrame(38);
+            //actionFrame.optionalSound = soundPlayer.jumpLand;
+            //jumpBack.AddActionFrame(actionFrame);
 
             jumpNeutral = new Attack(input, transform, playerMovement, FighterState.jumping, 43);
+            //actionFrame = new ActionFrame(3);
+            //actionFrame.optionalSound = soundPlayer.jumpRise;
+            //jumpNeutral.AddActionFrame(actionFrame);
             actionFrame = new ActionFrame(3);
             actionFrame.setMovement(new Vector2(0, 7));
             jumpNeutral.AddActionFrame(actionFrame, 13);
@@ -335,10 +425,14 @@ namespace RoundTwoMono
             actionFrame = new ActionFrame(24);
             actionFrame.setMovement(new Vector2(0, -7));
             jumpNeutral.AddActionFrame(actionFrame, 13);
+            //actionFrame = new ActionFrame(38);
+            //actionFrame.optionalSound = soundPlayer.jumpLand;
+            //jumpNeutral.AddActionFrame(actionFrame);
 
             winAttack = new Attack(input, transform, playerMovement, FighterState.invincible, 500);
             introAttack = new Attack(input, transform, playerMovement, FighterState.invincible, 60);
 
+            health.SetThrows(chunLiThrown);
 
             Animation walkingAnimation = new Animation(animationType.looping);
             walkingAnimation.addFrame(Content.Load<Texture2D>("walkToward/SF3_3rd_Chunli_23072"), 1);
@@ -803,36 +897,47 @@ namespace RoundTwoMono
             win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24390"), 3);
             win.addFrame(Content.Load<Texture2D>("Win/SF3_3rd_Chunli_24391"), 3);
 
-            animator.addAnimation(FigherAnimations.walkToward, walkingAnimation);
-            animator.addAnimation(FigherAnimations.neutral, neutralAnimation);
-            animator.addAnimation(FigherAnimations.walkBack, walkBackAnimation);
+            Animation chunliThrow = new Animation(animationType.oneShot);
+            chunliThrow.addFrame(Content.Load<Texture2D>("hit/SF3_3rd_Chunli_23440"), 10);
+            chunliThrow.addFrame(Content.Load<Texture2D>("hit/SF3_3rd_Chunli_23441"), 10);
 
-            animator.addAnimation(FigherAnimations.light, lightAnimation);
-            animator.addAnimation(FigherAnimations.medium, mediumAnimation);
-            animator.addAnimation(FigherAnimations.heavy, heavyAnimation);
+            animator.addAnimation(FighterAnimations.walkToward, walkingAnimation);
+            animator.addAnimation(FighterAnimations.neutral, neutralAnimation);
+            animator.addAnimation(FighterAnimations.walkBack, walkBackAnimation);
 
-            animator.addAnimation(FigherAnimations.sp1, sp1Animation);
-            animator.addAnimation(FigherAnimations.sp2, sp2Animation);
-            animator.addAnimation(FigherAnimations.sp3, sp3Animation);
+            animator.addAnimation(FighterAnimations.light, lightAnimation);
+            animator.addAnimation(FighterAnimations.medium, mediumAnimation);
+            animator.addAnimation(FighterAnimations.heavy, heavyAnimation);
 
-            animator.addAnimation(FigherAnimations.throwTry, throwTryAnimation);
-            animator.addAnimation(FigherAnimations.throwComplete, throwAnimation);
-            animator.addAnimation(FigherAnimations.Super, superAnimation);
+            animator.addAnimation(FighterAnimations.sp1, sp1Animation);
+            animator.addAnimation(FighterAnimations.sp2, sp2Animation);
+            animator.addAnimation(FighterAnimations.sp3, sp3Animation);
 
-            animator.addAnimation(FigherAnimations.jumpLight, jumpLightAnimation);
-            animator.addAnimation(FigherAnimations.jumpMedium, jumpMediumAnimation);
-            animator.addAnimation(FigherAnimations.jumpHeavy, jumpHeavyAnimation);
+            animator.addAnimation(FighterAnimations.throwTry, throwTryAnimation);
+            animator.addAnimation(FighterAnimations.throwComplete, throwAnimation);
+            animator.addAnimation(FighterAnimations.Super, superAnimation);
 
-            animator.addAnimation(FigherAnimations.jumpRising, jumpRisingAnimation);
-            animator.addAnimation(FigherAnimations.knockdown, knockdown);
-            animator.addAnimation(FigherAnimations.deathKnockdown, deathKnockdown);
+            animator.addAnimation(FighterAnimations.jumpLight, jumpLightAnimation);
+            animator.addAnimation(FighterAnimations.jumpMedium, jumpMediumAnimation);
+            animator.addAnimation(FighterAnimations.jumpHeavy, jumpHeavyAnimation);
 
-            animator.addAnimation(FigherAnimations.airHit, airHit);
-            animator.addAnimation(FigherAnimations.hit, hitReel);
-            animator.addAnimation(FigherAnimations.blocking, blocking);
+            animator.addAnimation(FighterAnimations.jumpRising, jumpRisingAnimation);
+            animator.addAnimation(FighterAnimations.knockdown, knockdown);
+            animator.addAnimation(FighterAnimations.deathKnockdown, deathKnockdown);
 
-            animator.addAnimation(FigherAnimations.intro, intro);
-            animator.addAnimation(FigherAnimations.win, win);
+            animator.addAnimation(FighterAnimations.airHit, airHit);
+            animator.addAnimation(FighterAnimations.hit, hitReel);
+            animator.addAnimation(FighterAnimations.blocking, blocking);
+
+            animator.addAnimation(FighterAnimations.intro, intro);
+            animator.addAnimation(FighterAnimations.win, win);
+
+            animator.addAnimation(FighterAnimations.chunliThrow, chunliThrow);
+
+            
+
+
+
 
 
             //animator.addAnimation(FigherAnimations.jumpDecending, jumpDescendingAnimation);
@@ -850,6 +955,8 @@ namespace RoundTwoMono
 
             super.Load(Content);
             throwAttack.Load(Content);
+            throwTry.Load(Content);
+            chunLiThrown.Load(Content);
 
             jumpLight.Load(Content);
             jumpMedium.Load(Content);
@@ -882,7 +989,7 @@ namespace RoundTwoMono
             // projectile setup
             Entity projectile = new Entity();
             entity.scene.addEntity(projectile);
-            fireball = new Projectile(new Hitbox(85, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 30, 30), new Vector2(0, 0), CancelState.special, HitSpark.special));
+            fireball = new Projectile(new Hitbox(85, 1, 16, 10, new Vector2(-5, 0), new Rectangle(0, 0, 30, 30), new Vector2(0, 0), CancelState.special, HitSpark.special, ignorePushback: true));
             
 
             projectile.addComponent(fireball);
@@ -945,6 +1052,7 @@ namespace RoundTwoMono
 
             super.SetOtherPlayer(ref other);
             throwAttack.SetOtherPlayer(ref other);
+            throwTry.SetOtherPlayer(ref other);
 
             fireball.setOtherPlayer(ref other);
 
@@ -958,10 +1066,10 @@ namespace RoundTwoMono
         {
             if (playerMovement.GetState() == FighterState.neutral)
             {
-                playerMovement.StartAttack(light, FigherAnimations.light);
+                playerMovement.StartAttack(light, FighterAnimations.light);
                 return true;
             } else if (playerMovement.GetState() == FighterState.jumping){
-                playerMovement.StartAttack(jumpLight, FigherAnimations.jumpLight);
+                playerMovement.StartAttack(jumpLight, FighterAnimations.jumpLight, false);
                 return true;
             }
             return false;
@@ -971,13 +1079,13 @@ namespace RoundTwoMono
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light)
             {
-                playerMovement.StartAttack(medium, FigherAnimations.medium);
+                playerMovement.StartAttack(medium, FighterAnimations.medium);
                 return true;
             }
             else if (playerMovement.GetState() == FighterState.jumping || (playerMovement.GetState() == FighterState.jumpingAttack && jumpMovesRemaining))
             {
                 jumpMovesRemaining = false;
-                playerMovement.StartAttack(jumpMedium, FigherAnimations.jumpMedium);
+                playerMovement.StartAttack(jumpMedium, FighterAnimations.jumpMedium, false);
                 return true;
             }
             return false;
@@ -987,12 +1095,12 @@ namespace RoundTwoMono
         {
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.medium)
             {
-                playerMovement.StartAttack(heavy, FigherAnimations.heavy);
+                playerMovement.StartAttack(heavy, FighterAnimations.heavy);
                 return true;
             }
             else if (playerMovement.GetState() == FighterState.jumping)
             {
-                playerMovement.StartAttack(jumpHeavy, FigherAnimations.jumpHeavy);
+                playerMovement.StartAttack(jumpHeavy, FighterAnimations.jumpHeavy, false);
                 return true;
             }
             return false;
@@ -1002,7 +1110,7 @@ namespace RoundTwoMono
             if (!fireball.isActive && (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy))
             {
                 superMeter.AddMeter(50);
-                playerMovement.StartAttack(sp1, FigherAnimations.sp1);
+                playerMovement.StartAttack(sp1, FighterAnimations.sp1);
                 return true;
             }
             return false;
@@ -1010,6 +1118,7 @@ namespace RoundTwoMono
         public void ActivateFireabll() {
             
             fireball.Activate(transform.position, playerMovement.isFacingLeft);
+            MasterSound.fireball.Play();
         }
         public void FireballHit() {
             if (playerMovement.GetState() == FighterState.attackStartup) {
@@ -1021,7 +1130,7 @@ namespace RoundTwoMono
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy)
             {
                 superMeter.AddMeter(75);
-                playerMovement.StartAttack(sp2, FigherAnimations.sp2);
+                playerMovement.StartAttack(sp2, FighterAnimations.sp2);
                 return true;
             }
             return false;
@@ -1031,7 +1140,7 @@ namespace RoundTwoMono
             if (playerMovement.GetState() == FighterState.neutral || playerMovement.cancelState == CancelState.light || playerMovement.cancelState == CancelState.medium || playerMovement.cancelState == CancelState.heavy)
             {
                 superMeter.AddMeter(75);
-                playerMovement.StartAttack(sp3, FigherAnimations.sp3);
+                playerMovement.StartAttack(sp3, FighterAnimations.sp3);
                 return true;
             }
             return false;
@@ -1042,7 +1151,7 @@ namespace RoundTwoMono
             {
                 superMeter.EmptyMeter();
                 playerMovement.transform.position.Y = playerMovement.groundBound;
-                playerMovement.StartAttack(super, FigherAnimations.Super);
+                playerMovement.StartAttack(super, FighterAnimations.Super);
                 return true;
             }
             return false;
@@ -1051,12 +1160,13 @@ namespace RoundTwoMono
             MasterObjectContainer.superEffect.transform.position = transform.position;
             MasterObjectContainer.superEffect.PlayAnimation(superFlash.super, true);
             MasterObjectContainer.hitstopRemaining = 60;
+            MasterSound.super.Play();
         }
         public bool ThrowAttackFunc()
         {
             if (playerMovement.GetState() == FighterState.neutral )
             {
-                playerMovement.StartAttack(throwAttack, FigherAnimations.throwTry);
+                playerMovement.StartAttack(throwTry, FighterAnimations.throwTry);
                 return true;
             }
             return false;
@@ -1064,7 +1174,7 @@ namespace RoundTwoMono
         public void jumpNeutralFunc() {
             if (playerMovement.GetState() == FighterState.neutral)
             {
-                playerMovement.StartJump(jumpNeutral, FigherAnimations.jumpRising);
+                playerMovement.StartJump(jumpNeutral, FighterAnimations.jumpRising);
                 jumpMovesRemaining = false;
             }
         }
@@ -1074,10 +1184,10 @@ namespace RoundTwoMono
             {
                 if (playerMovement.isFacingLeft)
                 {
-                    playerMovement.StartJump(jumpBack, FigherAnimations.jumpRising);
+                    playerMovement.StartJump(jumpBack, FighterAnimations.jumpRising);
                 }
                 else {
-                    playerMovement.StartJump(jumpForward, FigherAnimations.jumpRising);
+                    playerMovement.StartJump(jumpForward, FighterAnimations.jumpRising);
                 }
                 jumpMovesRemaining = false;
             }
@@ -1088,10 +1198,10 @@ namespace RoundTwoMono
             {
                 if (playerMovement.isFacingLeft)
                 {
-                    playerMovement.StartJump(jumpForward, FigherAnimations.jumpRising);
+                    playerMovement.StartJump(jumpForward, FighterAnimations.jumpRising);
                 }
                 else {
-                    playerMovement.StartJump(jumpBack, FigherAnimations.jumpRising);
+                    playerMovement.StartJump(jumpBack, FighterAnimations.jumpRising);
                 }
                 jumpMovesRemaining = false;
             }

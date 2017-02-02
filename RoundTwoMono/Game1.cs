@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using EngineFang;
@@ -162,6 +164,11 @@ namespace RoundTwoMono
 
             chun.setOtherPlayer(ref chunli2);
             chun2.setOtherPlayer(ref chunli);
+
+            MasterSound.Load(Content);
+
+            MasterObjectContainer.backgroundMusic = Content.Load<Song>("Music/ChunLiStage");
+
             MasterObjectContainer.playerOneMovement = chunli.getComponent<PlayerMovement>();
             MasterObjectContainer.playerTwoMovement = chunli2.getComponent<PlayerMovement>();
             MasterObjectContainer.NextRound();

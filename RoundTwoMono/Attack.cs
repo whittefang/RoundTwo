@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using EngineFang;
@@ -55,30 +56,35 @@ namespace RoundTwoMono
         }
 
         public void AddActionFrame(ActionFrame actionFrame, int duration =1) {
-         
+
+            int initialActiveFrame = actionFrame.activeFrame;
+
             for (int i = 0; i < duration; i++)
             {
                 // if an action frame exists we replace relevant fields
                 // WARING: possible to overwrite important data 
-                if (actionFrames.ContainsKey(actionFrame.activeFrame)) {
+                if (actionFrames.ContainsKey(actionFrame.activeFrame + i)) {
                     if (actionFrame.isAttack) {
-                        actionFrames[actionFrame.activeFrame].setAttack(actionFrame.hitbox);
+                        actionFrames[actionFrame.activeFrame + i].setAttack(actionFrame.hitbox);
                     }
                     if (actionFrame.isMovement)
                     {
-                        actionFrames[actionFrame.activeFrame].setMovement(actionFrame.movementTranslation);
+                        actionFrames[actionFrame.activeFrame + i].setMovement(actionFrame.movementTranslation);
                     }
                     if(actionFrame.optionalFunction != null)
                     {
-                        actionFrames[actionFrame.activeFrame].optionalFunction = actionFrame.optionalFunction;
+                        actionFrames[actionFrame.activeFrame + i].optionalFunction = actionFrame.optionalFunction;
                     }
                     if (actionFrame.optionalHitFunction != null) {
-                        actionFrames[actionFrame.activeFrame].optionalHitFunction = actionFrame.optionalHitFunction;
+                        actionFrames[actionFrame.activeFrame + i].optionalHitFunction = actionFrame.optionalHitFunction;
+                    }
+                    if (actionFrame.optionalSound != null) {
+                        actionFrames[actionFrame.activeFrame + i].optionalSound = actionFrame.optionalSound;
                     }
                 } else {
-                    actionFrames.Add(actionFrame.activeFrame, actionFrame);
+                    actionFrames.Add(initialActiveFrame + i, actionFrame);
                     actionFrame = new ActionFrame(actionFrame);
-                    actionFrame.setActiveFrame(actionFrame.activeFrame + 1);
+                    actionFrame.setActiveFrame(initialActiveFrame + i);
                 }
             }
         }
@@ -132,7 +138,9 @@ namespace RoundTwoMono
                         if (actionFrames[currentStep].optionalHitFunction != null) {
                             actionFrames[currentStep].optionalHitFunction();
                         }
+                        
                     }
+
                 }
 
                 
@@ -140,6 +148,12 @@ namespace RoundTwoMono
                 if (actionFrames[currentStep].optionalFunction != null)
                 {
                     actionFrames[currentStep].optionalFunction();
+                }
+
+                // run optional sound effect if it exists
+                if (actionFrames[currentStep].optionalSound != null)
+                {
+                    actionFrames[currentStep].optionalSound.Play();
                 }
 
             }
@@ -183,6 +197,7 @@ namespace RoundTwoMono
             hitbox = actionframe.hitbox;
             optionalFunction = actionframe.optionalFunction;
             optionalHitFunction = actionframe.optionalHitFunction;
+            optionalSound = actionframe.optionalSound;
         }
 
         public void setAttack(Hitbox hitbox) {
@@ -197,6 +212,9 @@ namespace RoundTwoMono
         public void setActiveFrame(int activeFrame) {
             this.activeFrame = activeFrame;
         }
+        public void setOptionalSound(SoundEffect newSound) {
+            optionalSound = newSound;
+        }
 
         public int activeFrame;
         public bool isAttack;
@@ -204,6 +222,7 @@ namespace RoundTwoMono
         public Vector2 movementTranslation;
         public Hitbox hitbox;
         public delegate void voidDel();
+        public SoundEffect optionalSound;
         public voidDel optionalFunction, optionalHitFunction;
 
     }
@@ -211,7 +230,7 @@ namespace RoundTwoMono
     struct Hitbox
     {
         public Hitbox( int damage, int chipDamage, int hitstun, int blockstun, Vector2 pushback, 
-            Rectangle hitboxBounds, Vector2 positionOffset,  CancelState cancelStrength,HitSpark attackStrength,AttackProperty attackProperty = AttackProperty.Hit, int pushbackDuration =5, int hitStop = -1)
+            Rectangle hitboxBounds, Vector2 positionOffset,  CancelState cancelStrength,HitSpark attackStrength,AttackProperty attackProperty = AttackProperty.Hit, int pushbackDuration =5, int hitStop = -1, bool ignorePushback = false, ThrowType throwType = ThrowType.none)
         {
             this.damage = damage;
             this.chipDamage = chipDamage;
@@ -224,6 +243,8 @@ namespace RoundTwoMono
             this.attackProperty = attackProperty;
             this.cancelStrength = cancelStrength;
             this.attackStrength = attackStrength;
+            this.ignorePushback = ignorePushback;
+            this.throwType = throwType;
             moveMasterID = MasterObjectContainer.GetMoveMasterID();
             moveCurrentUseID = 0;
             if (hitStop == -1)
@@ -266,11 +287,18 @@ namespace RoundTwoMono
         public AttackProperty attackProperty;
         public int moveMasterID;
         public int moveCurrentUseID;
+        public bool ignorePushback;
+        public ThrowType throwType;
     }
     enum AttackProperty {
         Throw,
         Launcher,
         Kockdown,
         Hit
+    }
+    enum ThrowType {
+        chun,
+        none
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using EngineFang;
 
 namespace RoundTwoMono
@@ -19,6 +20,7 @@ namespace RoundTwoMono
         public static int hitstopRemaining = 0;
         static int currentMoveID = 0;
         public static float LevelMaxBoundry = 235;
+        public static float playerBound = 600;
 
         public static Entity hitSparkHolder;
         public static SpriteAnimator<superFlash> superEffect;
@@ -26,6 +28,8 @@ namespace RoundTwoMono
         static int playerOneWins, playerTwoWins;
         static int introFramesRemaining = 0;
         static int roundEndFramesRemaining = 0;
+
+        public static Song backgroundMusic;
 
 
         static public int GetMoveMasterID() {
@@ -54,7 +58,7 @@ namespace RoundTwoMono
         }
         public static void NextRound() {
 
-
+            MediaPlayer.Play(backgroundMusic); 
 
             introFramesRemaining = 120;
             // move players to start position
@@ -84,8 +88,8 @@ namespace RoundTwoMono
                 // play neutral animations after intro finishes
                 if (introFramesRemaining == 60)
                 {
-                    playerTwoMovement.entity.getComponent<SpriteAnimator<FigherAnimations>>().PlayAnimation(FigherAnimations.neutral);
-                    playerOneMovement.entity.getComponent<SpriteAnimator<FigherAnimations>>().PlayAnimation(FigherAnimations.neutral);
+                    playerTwoMovement.entity.getComponent<SpriteAnimator<FighterAnimations>>().PlayAnimation(FighterAnimations.neutral);
+                    playerOneMovement.entity.getComponent<SpriteAnimator<FighterAnimations>>().PlayAnimation(FighterAnimations.neutral);
                 }
 
 

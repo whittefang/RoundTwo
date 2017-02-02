@@ -90,7 +90,7 @@ namespace EngineFang
             transform.flipRenderingHorizontal = isFacingLeft;
         }
     }
-    enum FigherAnimations
+    enum FighterAnimations
     {
         neutral,
         walkToward,
@@ -116,7 +116,9 @@ namespace EngineFang
         Super,
         intro,
         win,
-        deathKnockdown
+        deathKnockdown,
+        chunliThrow
+
 
     }
 }

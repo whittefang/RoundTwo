@@ -61,11 +61,13 @@
     <Compile Include="EngineFang\Component.cs" />
     <Compile Include="EngineFang\Entity.cs" />
     <Compile Include="EngineFang\ObjectPool.cs" />
+    <Compile Include="FighterSound.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="EngineFang\InputManager.cs" />
     <Compile Include="health.cs" />
     <Compile Include="Hitsparks.cs" />
     <Compile Include="MasterObjectContainer.cs" />
+    <Compile Include="MasterSound.cs" />
     <Compile Include="PlayerMovement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />

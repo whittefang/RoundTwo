@@ -21,10 +21,10 @@ namespace RoundTwoMono
         Vector2 hurtboxOrigin;
         Vector2 hurtboxOffset;
 
-        
+        FighterSound playerSound;
 
         PlayerMovement playerMovement;
-        SpriteAnimator<FigherAnimations> animator;
+        SpriteAnimator<FighterAnimations> animator;
 
         int hitstunRemaining, blockstunRemaining, stunMovementRemaining, recoveryRemaining;
         Vector2 movementStepSize;
@@ -32,12 +32,13 @@ namespace RoundTwoMono
 
         Hitbox previousAttack;
 
-        
+        bool ignoreCornerPushback = true;
 
-        
-        
 
-        
+
+        Attack chunLiThrow;
+
+
         ObjectPool lightHitSparks;
         ObjectPool mediumHitSparks;
         ObjectPool heavyHitSparks;
@@ -49,7 +50,7 @@ namespace RoundTwoMono
 
         SuperMeter superMeter;
 
-        public Health(float maxHealth, PlayerMovement playerMovement, SpriteAnimator<FigherAnimations> animator, PlayerIndex playerNumber, SuperMeter superMeter)
+        public Health(float maxHealth, PlayerMovement playerMovement, SpriteAnimator<FighterAnimations> animator, PlayerIndex playerNumber, SuperMeter superMeter, FighterSound fighterSound)
         {
             maximumHealth = maxHealth;
             currentHealth = maxHealth;
@@ -65,7 +66,12 @@ namespace RoundTwoMono
             {
                 playerOne = true;
             }
+            playerSound = fighterSound;
            
+        }
+
+        public void SetThrows(Attack chunThrow) {
+            chunLiThrow = chunThrow;
         }
 
         // returns true if attack is successful and false if it has 'missed' eg invincible 
@@ -79,6 +85,16 @@ namespace RoundTwoMono
                     || playerMovement.GetState() != FighterState.hitstun || playerMovement.GetState() != FighterState.blockstun))
                 {
                     // successful throw
+                    // play throw animation and attack
+                    if (hitData.throwType == ThrowType.chun) {
+                        playerMovement.StartAttack(chunLiThrow, FighterAnimations.chunliThrow);
+                    }
+                   
+                    // deal damage on delay
+
+                    // play sound
+                    MasterSound.grab.Play();
+
 
                 }
                 else if (playerMovement.GetState() == FighterState.neutral && playerMovement.CheckIfBlocking() || playerMovement.GetState() == FighterState.blockstun)
@@ -87,10 +103,11 @@ namespace RoundTwoMono
                     playerMovement.CancelActions();
                     blockstunRemaining = hitData.blockstun;
                     stunMovementRemaining = 5;
+                    ignoreCornerPushback = hitData.ignorePushback;
                     movementStepSize = new Vector2(hitData.pushback.X, 0);
                     playerMovement.SetState(FighterState.blockstun);
                     DealDamage(hitData.chipDamage, true);
-                    animator.PlayAnimation(FigherAnimations.blocking);
+                    animator.PlayAnimation(FighterAnimations.blocking);
                 }
                 else if (playerMovement.GetState() != FighterState.invincible)
                 {
@@ -117,37 +134,45 @@ namespace RoundTwoMono
                         comboProration = 1;
                     }
 
+                    ignoreCornerPushback = hitData.ignorePushback;
+
                     UIMatch.ComboTextUpdate(comboDamage, comboHits, playerOne);
 
                     if (playerMovement.GetState() == FighterState.jumping || playerMovement.GetState() == FighterState.jumpingAttack || playerMovement.GetState() == FighterState.airHitstun || hitData.attackProperty == AttackProperty.Launcher || currentHealth <= 0)
                     {
                         playerMovement.SetState(FighterState.airHitstun);
-                        animator.PlayAnimation(FigherAnimations.airHit, true);
+                        animator.PlayAnimation(FighterAnimations.airHit, true);
                     }
                     else {
                         playerMovement.SetState(FighterState.hitstun);
-                        animator.PlayAnimation(FigherAnimations.hit, true);
+                        animator.PlayAnimation(FighterAnimations.hit, true);
                     }
 
                     
                     MasterObjectContainer.hitstopRemaining = hitData.hitStop;
                     comboFadeBuffer = 30;
 
+                    ///playerSound.hit.Play();
+
                     if (hitData.attackStrength == HitSpark.light)
                     {
                         lightHitSparks.Get().Play(hitPoint);
+                        MasterSound.hitLight.Play();
                     }
                     else if (hitData.attackStrength == HitSpark.medium)
                     {
                         mediumHitSparks.Get().Play(hitPoint);
+                        MasterSound.hitMedium.Play();
                     }
                     else if (hitData.attackStrength == HitSpark.heavy)
                     {
                         heavyHitSparks.Get().Play(hitPoint);
+                        MasterSound.hitHard.Play();
                     }
                     else if (hitData.attackStrength == HitSpark.special)
                     {
                         specialHitSparks.Get().Play(hitPoint);
+                        MasterSound.hitHard.Play();
                     }
                     // cancel other active moves
                     // set state to hitstun
@@ -226,7 +251,13 @@ namespace RoundTwoMono
 
                 if (stunMovementRemaining > 0)
                 {
-                    playerMovement.MoveTowards(movementStepSize);
+                    if (transform.position.X >= Camera.GetBound() || transform.position.X <= Camera.GetBound(false) && !ignoreCornerPushback)
+                    {
+                        playerMovement.otherPlayerMovement.MoveTowards(movementStepSize);
+                    }
+                    else {
+                        playerMovement.MoveTowards(movementStepSize);
+                    }
                     stunMovementRemaining--;
                 }
 
@@ -252,10 +283,10 @@ namespace RoundTwoMono
                         recoveryRemaining = 80;
                         if (currentHealth <= 0)
                         {
-                            animator.PlayAnimation(FigherAnimations.deathKnockdown);
+                            animator.PlayAnimation(FighterAnimations.deathKnockdown);
                         }
                         else {
-                            animator.PlayAnimation(FigherAnimations.knockdown);
+                            animator.PlayAnimation(FighterAnimations.knockdown);
                         }
                         playerMovement.SetState(FighterState.invincible);
                     }
