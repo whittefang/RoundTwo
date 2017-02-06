@@ -64,6 +64,10 @@ namespace RoundTwoMono
             // move players to start position
             playerOneMovement.transform.position = new Vector3(-50, 0, 0);
             playerTwoMovement.transform.position = new Vector3(50, 0, 0);
+
+            playerOneMovement.entity.getComponent<FighterStateHandler>().ProcessFacingDirection();
+            playerTwoMovement.entity.getComponent<FighterStateHandler>().ProcessFacingDirection();
+
             // reset health
             playerOneMovement.entity.getComponent<Health>().ResetHealth();
             playerTwoMovement.entity.getComponent<Health>().ResetHealth();
@@ -74,8 +78,8 @@ namespace RoundTwoMono
             if (DevMode)
             {
 
-                playerOneMovement.SetState(FighterState.neutral);
-                playerTwoMovement.SetState(FighterState.neutral);
+                playerOneMovement.entity.getComponent<FighterStateHandler>().SetState(FighterState.neutral);
+                playerTwoMovement.entity.getComponent<FighterStateHandler>().SetState(FighterState.neutral);
             }
         }
         public static void Update()
@@ -98,8 +102,8 @@ namespace RoundTwoMono
                 // enable controls
                 if (introFramesRemaining == 1)
                 {
-                    playerOneMovement.SetState(FighterState.neutral);
-                    playerTwoMovement.SetState(FighterState.neutral);
+                    playerOneMovement.entity.getComponent<FighterStateHandler>().SetState(FighterState.neutral);
+                    playerTwoMovement.entity.getComponent<FighterStateHandler>().SetState(FighterState.neutral);
                 }
 
                 introFramesRemaining--;

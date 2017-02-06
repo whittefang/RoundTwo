@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace EngineFang
 {
@@ -18,6 +19,15 @@ namespace EngineFang
             entity.scene = this;
             entities.Add(entity);
         }
+
+        public void Load(ContentManager content) {
+            foreach (Entity e in entities)
+            {
+                e.Load(content);
+            }
+            
+        }
+
         public void Update() {
             for (int i = 0; i < entities.Count; i++)
             {

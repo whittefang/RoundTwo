@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace EngineFang
 {
-    class Component
+    abstract class Component
     {
         public Transform transform;
         public Entity entity;
@@ -18,6 +19,8 @@ namespace EngineFang
             this.transform = transform;
             this.entity = entity;
         }
+        public virtual void Load(ContentManager content) { }
+        
 
     }
 }

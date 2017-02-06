@@ -24,15 +24,16 @@ namespace RoundTwoMono
         static float DeadSize = .15f;
 
         SpriteAnimator<FighterAnimations> spriteAnimator;
-        FighterState state;
+      
         public CancelState cancelState;
 
         public float groundBound;
         public PlayerMovement otherPlayerMovement;
-        public bool isFacingLeft { set; get; }
         Vector2 attackDirection;
 
-        public Attack currentAttack, currentJump;
+        FighterStateHandler state;
+
+        public Attack currentJump;
         bool isAttacking, isJumping;
         Texture2D groundIcon;
         Rectangle groundIconRect;
@@ -42,15 +43,12 @@ namespace RoundTwoMono
         Boolean playerMovementBoxEnabled = true;
 
         public PlayerMovement() {
-            state = FighterState.neutral;
             speed = 0;
         }
-        public PlayerMovement(InputManager input, SpriteAnimator<FighterAnimations> spriteAnimator, float speed) {
-            state = FighterState.neutral;
+        public PlayerMovement(float speed) {
+            
             cancelState = CancelState.none;
-            this.input = input;
             this.speed = speed;
-            this.spriteAnimator = spriteAnimator;
 
             isAttacking = false;
             isJumping = false;
@@ -64,13 +62,14 @@ namespace RoundTwoMono
 
 
         }
-
+        public override void Load(ContentManager content) {
+            spriteAnimator = entity.getComponent<SpriteAnimator<FighterAnimations>>();
+            input = entity.getComponent<InputManager>();
+            state = entity.getComponent<FighterStateHandler>();
+            groundIcon = content.Load<Texture2D>("square");
+        }
         public void Update() {
-            if (state == FighterState.neutral && otherPlayerMovement != null)
-            {
-                ProcessFacingDirection();
-            }
-            ProcessAttacking();
+           
             ProcessJumping();
             ProcessMovement();
 
@@ -83,14 +82,14 @@ namespace RoundTwoMono
         public void PlayWin() {
             CancelActions();
             transform.position.Y = 0;
-            SetState(FighterState.invincible);
+            state.SetState(FighterState.invincible);
             spriteAnimator.PlayAnimation(FighterAnimations.win);
         }
         public void PlayIntro()
         {
             CancelActions();
-            ProcessFacingDirection();
-            SetState(FighterState.invincible);
+            state.ProcessFacingDirection();
+            state.SetState(FighterState.invincible);
             spriteAnimator.PlayAnimation(FighterAnimations.intro);
         }
         public void SetJumps(voidDel forward, voidDel back, voidDel neutral) {
@@ -108,42 +107,16 @@ namespace RoundTwoMono
         {
 
             currentJump = newJump;
-            SetState(newJump.state);
+            state.SetState(newJump.state);
             spriteAnimator.PlayAnimation(newAnimation, true);
 
             currentJump.Start();
             isJumping = true;
         }
 
-        // handle beginning of attack command
-        public void StartAttack(Attack newAttack, FighterAnimations newAnimation, bool allowFlip = true)
-        {
-            if (allowFlip)
-            {
-                ProcessFacingDirection();
-            }
-            currentAttack = newAttack;
-            SetState(newAttack.state);
-            spriteAnimator.PlayAnimation(newAnimation, true);
+        
 
-            currentAttack.Start();
-            isAttacking = true;
-        }
-
-        // handle attack updates
-        void ProcessAttacking() {
-            if (isAttacking)
-            {
-                bool finished = currentAttack.NextStep(attackDirection);
-                if (finished) {
-                    isAttacking = false;
-                    if (!currentAttack.isJumpingAttack)
-                    {
-                        SetState(FighterState.neutral);
-                    }
-                }
-            }
-        }
+        
 
         //handle jumping updates
         void ProcessJumping()
@@ -154,35 +127,19 @@ namespace RoundTwoMono
                 if (finished)
                 {
                     isJumping = false;
-                    SetState(FighterState.neutral);
+                    state.SetState(FighterState.neutral);
                 }
             }
         }
 
-        // handle facing direction updates
-        void ProcessFacingDirection() {
-            if (transform.position.X > otherPlayerMovement.transform.position.X && !isFacingLeft)
-            {
-                transform.flipRenderingHorizontal = true;
-                isFacingLeft = true;
-                spriteAnimator.Flip(true);
-                attackDirection.X = -1;
-            }
-            else if (transform.position.X < otherPlayerMovement.transform.position.X && isFacingLeft) {
-                transform.flipRenderingHorizontal = false;
-                isFacingLeft = false;
-                spriteAnimator.Flip(false);
-                attackDirection.X = 1;
-
-            }
-        }
+        
 
 
         // take in stick position and move character accordingly
         void ProcessMovement() {
 
             // quit out if not in the neutral state
-            if (state != FighterState.neutral) {
+            if (state.GetState() != FighterState.neutral) {
                 return;
             }
 
@@ -190,7 +147,7 @@ namespace RoundTwoMono
 
             // jump movement block
             if (inputAxis.Y > .5f) {
-                ProcessFacingDirection();
+                state.ProcessFacingDirection();
                 if (inputAxis.X > DeadSize) {
                     // jump right
                     jumpForward();
@@ -213,7 +170,7 @@ namespace RoundTwoMono
                 // check if left or right movement
                 if (inputAxis.X > 0)
                 {
-                    if (isFacingLeft)
+                    if (state.GetFacingDirection())
                     {
                         spriteAnimator.PlayAnimation(FighterAnimations.walkBack);
                     } else
@@ -224,7 +181,7 @@ namespace RoundTwoMono
                 }
                 else
                 {
-                    if (isFacingLeft)
+                    if (state.GetFacingDirection())
                     {
                         spriteAnimator.PlayAnimation(FighterAnimations.walkToward);
                     }
@@ -240,27 +197,11 @@ namespace RoundTwoMono
             else {
                 spriteAnimator.PlayAnimation(FighterAnimations.neutral);
             }
-
-
-
-
-
         }
 
-        public void SetInputManager(InputManager input) {
-            this.input = input;
-        }
 
-        public FighterState GetState()
-        {
-            return state;
-        }
-        public void SetState(FighterState newState)
-        {
-            state = newState;
-        }
         public void MoveTowards(Vector2 addVector) {
-            if (isFacingLeft) {
+            if (state.GetFacingDirection()) {
                 addVector.X *= -1;
             }
             TryMove(addVector);
@@ -348,16 +289,7 @@ namespace RoundTwoMono
         public void EnableMovementCollision(bool enabled) {
             playerMovementBoxEnabled = enabled;
         }
-        public bool CheckIfBlocking()
-        {
-            if (isFacingLeft && input.GetLeftStick().X > 0) {
-                return true;
-            }else if (!isFacingLeft && input.GetLeftStick().X < 0)
-            {
-                return true;
-            }
-            return false;
-        }
+       
 
         public void CancelActions() {
             isAttacking = false;
@@ -377,41 +309,10 @@ namespace RoundTwoMono
                 spriteBatch.Draw(groundIcon, groundIconRect, new Color(Color.Purple, .5f));
                 // render movebox
                 spriteBatch.Draw(groundIcon, playerMovementBox, new Color(Color.Blue, .5f));
-                if (currentAttack != null && isAttacking)
-                {
-                    currentAttack.Draw(spriteBatch);
-                }
+                
             }
-        }
-        public void Load(ContentManager content)
-        {
-            groundIcon = content.Load<Texture2D>("square");
         }
     }
     
-    // fighter character state enumerator
-    enum FighterState
-    {
-        neutral,
-        walk,
-        jumping,
-        invincible,
-        hitstun,
-        airHitstun,
-        blockstun,
-        projectileInvincible,
-        attackStartup,
-        attackRecovery,
-        jumpingAttack
-
-    };
-
-    enum CancelState
-    {
-        light,
-        medium,
-        heavy,
-        special,
-        none
-    };
+    
 }

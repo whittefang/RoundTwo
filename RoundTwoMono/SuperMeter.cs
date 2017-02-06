@@ -14,14 +14,15 @@ namespace RoundTwoMono
         const float superMeterMaximum = 1000;
         float currentMeter = 0;
 
-        bool isPlayerOne = false;
+        FighterStateHandler state;
 
-        public SuperMeter(PlayerIndex playerNumber) {
-            if (playerNumber == PlayerIndex.Two)
-            {
-                isPlayerOne = true;
-            }
+        public SuperMeter() {
             currentMeter = 000;
+        }
+        public override void Load(ContentManager content)
+        {
+            state = entity.getComponent<FighterStateHandler>();
+
             AdjustBar();
         }
 
@@ -41,7 +42,7 @@ namespace RoundTwoMono
             AdjustBar();
         }
         void AdjustBar() {
-            UIMatch.SuperbarUpdate((currentMeter / superMeterMaximum), isPlayerOne);
+            UIMatch.SuperbarUpdate((currentMeter / superMeterMaximum), state.isPlayerOne());
         }
 
         

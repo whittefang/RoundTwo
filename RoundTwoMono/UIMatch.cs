@@ -24,6 +24,7 @@ namespace RoundTwoMono
 
         static int comboDamageP1, comboDamageP2;
         static int comboCountP1, comboCountP2;
+        static int comboFadeBufferP1, comboFadeBufferP2;
 
         static UIMatch() {
             // art
@@ -114,17 +115,42 @@ namespace RoundTwoMono
                 comboDamageP2 = comboDamage;
                 DisplayComboDataP2 = true;
             }
+            
         }
         static public void HideComboText(bool playerOne) {
             if (playerOne)
             {
-                DisplayComboDataP1 = false;
+                comboFadeBufferP1 = 30;
+            }
+            else
+            {
+                comboFadeBufferP1 = 30;
+            }
+        }
+        
+
+        static public void Update()
+        {
+            if (comboFadeBufferP2 > 0)
+            {
+                comboFadeBufferP2--;
             }
             else
             {
                 DisplayComboDataP2 = false;
 
             }
+
+            if (comboFadeBufferP1 > 0)
+            {
+                comboFadeBufferP1--;
+            }
+            else
+            {
+                DisplayComboDataP1 = false;
+
+            }
+
         }
     }
 }

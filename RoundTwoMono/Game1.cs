@@ -18,8 +18,7 @@ namespace RoundTwoMono
         Entity stageEntity;
         Entity objectPools;
         DebugTools debugTools;
-       
-
+        ChunLiDriver chunDriverOne, chunDriverTwo;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -41,21 +40,35 @@ namespace RoundTwoMono
             mainScene = new Scene();
             noHitstopScene = new Scene();
             debugTools = new DebugTools();
-            
+
+            // player one
+            chunDriverOne = new ChunLiDriver();
+            chunli.addComponent(chunDriverOne);
+
+            // player two
+            chunDriverTwo = new ChunLiDriver();
+            chunli2.addComponent(chunDriverTwo);
+
+            mainScene.addEntity(stageEntity);
+            mainScene.addEntity(chunli);
+            mainScene.addEntity(chunli2);
+            noHitstopScene.addEntity(objectPools);
+
             base.Initialize();
         }
 
         
         protected override void LoadContent()
         {
+
+            chunDriverOne.InitializeComponents(PlayerIndex.One);
+            chunDriverTwo.InitializeComponents(PlayerIndex.Two);
+
             Camera.SetPosition(new Vector2(0, 110));
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mainScene.addEntity(stageEntity);
-            mainScene.addEntity(chunli);
-            mainScene.addEntity(chunli2);
-            noHitstopScene.addEntity(objectPools);
+           
 
             // set up object pools
             ObjectPool tmpHitSparks = new ObjectPool(HitSpark.block, Content);
@@ -152,20 +165,15 @@ namespace RoundTwoMono
             MasterObjectContainer.superEffect = superEffect;
             MasterObjectContainer.hitSparkHolder = objectPools;
 
-            // player one
-            var chun = new ChunLiDriver();
-            chunli.addComponent(chun);
-            chun.load(this.Content, PlayerIndex.One);
+            
 
-            // player two
-            var chun2 = new ChunLiDriver();
-            chunli2.addComponent(chun2);
-            chun2.load(this.Content, PlayerIndex.Two);
+            
 
-            chun.setOtherPlayer(ref chunli2);
-            chun2.setOtherPlayer(ref chunli);
-
+            mainScene.Load(Content);
             MasterSound.Load(Content);
+
+            chunDriverOne.setOtherPlayer(ref chunli2);
+            chunDriverTwo.setOtherPlayer(ref chunli);
 
             MasterObjectContainer.backgroundMusic = Content.Load<Song>("Music/ChunLiStage");
 

@@ -26,7 +26,7 @@ namespace RoundTwoMono
         int currentStep, totalSteps;
         Dictionary< int,ActionFrame> actionFrames;
         Entity otherPlayer;
-        Health otherHealth; 
+        HitResolver otherHitResolver; 
         Texture2D hitboxTexture;
         Color hitboxColor;
         Transform parentTransform;
@@ -48,7 +48,7 @@ namespace RoundTwoMono
         }
         public void SetOtherPlayer(ref Entity otherPlayer) {
             this.otherPlayer = otherPlayer;
-            otherHealth = otherPlayer.getComponent<Health>();
+            otherHitResolver = otherPlayer.getComponent<HitResolver>();
         }
 
         public void Load(ContentManager content) {
@@ -123,17 +123,12 @@ namespace RoundTwoMono
                     }
                     
                     actionFrames[currentStep].hitbox.hitboxBounds = Transform.GetCustomRenderPosition(actionFrames[currentStep].hitbox.hitboxBounds, new Vector2(parentTransform.position.X+(actionFrames[currentStep].hitbox.positionOffset.X * direction.X), parentTransform.position.Y + actionFrames[currentStep].hitbox.positionOffset.Y));
-                    if (actionFrames[currentStep].hitbox.hitboxBounds.Intersects(otherHealth.hurtbox))
+                    // check for hit
+                    if (otherHitResolver.CheckForHit(actionFrames[currentStep].hitbox))
                     {
-                        Rectangle hitUnion = Rectangle.Intersect(actionFrames[currentStep].hitbox.hitboxBounds, otherHealth.hurtbox);
-                        Vector2 hitPoint = new Vector2(hitUnion.X - hitUnion.Width / 2, hitUnion.Y - hitUnion.Height / 2);
-                        
 
                         //TODO: fix cancel state for invincible
                         playerMovement.cancelState = actionFrames[currentStep].hitbox.cancelStrength;
-                        // deal damage
-                        otherHealth.ProcessHit(actionFrames[currentStep].hitbox, hitPoint);
-
                         // run optional hit function when we have made contact
                         if (actionFrames[currentStep].optionalHitFunction != null) {
                             actionFrames[currentStep].optionalHitFunction();

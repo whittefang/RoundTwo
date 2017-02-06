@@ -53,6 +53,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ActionManager.cs" />
+    <Compile Include="AttackPlayer.cs" />
+    <Compile Include="Enumerators.cs" />
     <Compile Include="DebugTools.cs" />
     <Compile Include="EngineFang\Animation.cs" />
     <Compile Include="Attack.cs" />
@@ -62,9 +65,11 @@
     <Compile Include="EngineFang\Entity.cs" />
     <Compile Include="EngineFang\ObjectPool.cs" />
     <Compile Include="FighterSound.cs" />
+    <Compile Include="FighterStateHandler.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="EngineFang\InputManager.cs" />
     <Compile Include="health.cs" />
+    <Compile Include="HitResolver.cs" />
     <Compile Include="Hitsparks.cs" />
     <Compile Include="MasterObjectContainer.cs" />
     <Compile Include="MasterSound.cs" />

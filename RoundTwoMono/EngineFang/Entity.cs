@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace EngineFang
 {
@@ -65,6 +66,13 @@ namespace EngineFang
 
             return results;
         }
+
+        public void Load(ContentManager content) {
+            foreach (Component c in componentList) {
+                c.Load(content);
+            }
+        }
+
         // push update to all updateable components
         public void Update()
         {

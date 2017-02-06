@@ -17,7 +17,7 @@ namespace RoundTwoMono
         public Vector2 movementVector, SpawnPoint;
         public bool isActive = false;
         Hitbox hitData;
-        Health otherHealth;
+        HitResolver otherHitResolver;
 
         Texture2D hitboxTexture;
         Color hitboxColor;
@@ -55,7 +55,7 @@ namespace RoundTwoMono
         }
         public void setOtherPlayer(ref Entity other)
         {
-            otherHealth = other.getComponent<Health>();
+            otherHitResolver = other.getComponent<HitResolver>();
         }
         public void Activate(Vector3 position, bool travelLeft) {
 
@@ -85,18 +85,11 @@ namespace RoundTwoMono
                 transform.Translate(movementVector);
                 hitData.hitboxBounds = transform.GetRenderPosition(hitData.hitboxBounds);
                 // check for hit
-                if (hitData.hitboxBounds.Intersects(otherHealth.hurtbox)) {
-                    // deal damage
-                   
-                    Rectangle hitUnion = Rectangle.Intersect(hitData.hitboxBounds, otherHealth.hurtbox);
-                    Vector2 hitPoint = new Vector2(hitUnion.X - hitUnion.Width / 2, hitUnion.Y - hitUnion.Height / 2);
-
-                    if (otherHealth.ProcessHit(hitData, hitPoint)) {
-                        Dissipate();
-                        if (optionalFunction != null) {
-                            optionalFunction();
-                        }
-                    }
+                if (otherHitResolver.CheckForHit(hitData)) {                    
+                    Dissipate();
+                    if (optionalFunction != null) {
+                        optionalFunction();
+                    }                    
                 }
             }
         }

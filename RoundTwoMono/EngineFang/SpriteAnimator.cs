@@ -90,35 +90,5 @@ namespace EngineFang
             transform.flipRenderingHorizontal = isFacingLeft;
         }
     }
-    enum FighterAnimations
-    {
-        neutral,
-        walkToward,
-        walkBack,
-        light,
-        medium,
-        heavy,
-        sp1,
-        sp2,
-        sp3,
-        jumpLight,
-        jumpMedium,
-        jumpHeavy,
-        jumpRising,
-        jumpDecending,
-        jumpLanding,
-        hit,
-        airHit,
-        knockdown,
-        blocking,
-        throwTry,
-        throwComplete,
-        Super,
-        intro,
-        win,
-        deathKnockdown,
-        chunliThrow
-
-
-    }
+    
 }
